@@ -1,0 +1,59 @@
+### .NET ###
+bin/
+obj/
+out/
+*.user
+*.userosscache
+*.suo
+.vs/
+.vscode/
+*.dbmdl
+*.publishsettings
+artifacts/
+
+# Aspire
+**/apphost/.aspire/
+
+### Rider / VS ###
+.idea/
+*.sln.iml
+
+### Unity (scoped to client/Game.Client only, so it never affects the .NET solution) ###
+# Uncomment and configure Git LFS before adding large binary assets.
+client/Game.Client/[Ll]ibrary/
+client/Game.Client/[Tt]emp/
+client/Game.Client/[Oo]bj/
+client/Game.Client/[Bb]uild/
+client/Game.Client/[Bb]uilds/
+client/Game.Client/[Ll]ogs/
+client/Game.Client/[Mm]emoryCaptures/
+client/Game.Client/[Uu]serSettings/
+client/Game.Client/[Rr]ecordings/
+client/Game.Client/*.apk
+client/Game.Client/*.aab
+client/Game.Client/*.unitypackage
+client/Game.Client/*.app
+client/Game.Client/crashlytics-build.properties
+client/Game.Client/sysinfo.txt
+client/Game.Client/ExportedObj/
+client/Game.Client/*.csproj
+client/Game.Client/*.unityproj
+client/Game.Client/*.sln
+client/Game.Client/*.pidb
+client/Game.Client/*.booproj
+client/Game.Client/*.svd
+client/Game.Client/*.pdb
+client/Game.Client/*.mdb
+client/Game.Client/*.opendb
+client/Game.Client/*.VC.db
+client/Game.Client/*.userprefs
+
+### OS ###
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+### Secrets ###
+*.env
+appsettings.*.local.json
