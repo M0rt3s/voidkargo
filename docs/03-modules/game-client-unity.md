@@ -5,11 +5,12 @@ See [ADR 0002](../02-decisions/0002-unity-as-client-engine.md) for why Unity was
 
 ## Status
 
-**Not yet scaffolded.** This is a placeholder — a Unity project can't be generated headlessly
-via the .NET CLI; it needs the Unity Editor installed locally. See
-[`client/Game.Client/README.md`](../../client/Game.Client/README.md) for setup steps.
+**Scaffolded.** Unity 6000.5.6f1 (URP) project lives directly in
+[`client/Game.Client/`](../../client/Game.Client/). See
+[`client/Game.Client/README.md`](../../client/Game.Client/README.md) for how `Game.Shared` is
+referenced as a Unity local package and its C# compatibility constraints.
 
-## Responsibilities (once scaffolded)
+## Responsibilities
 
 - All rendering/visuals for the game map, trains, and UI.
 - UI built with Unity **UI Toolkit** (UXML/USS) — deliberately close to HTML/CSS.

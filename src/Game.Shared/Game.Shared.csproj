@@ -1,9 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <!--
+      net10.0: used by Game.Backend/Game.Website/tests in this solution.
+      netstandard2.1: Unity's max supported API compatibility level (Unity consumes this
+      project as a local package pointing at the source, see client/Game.Client/README.md).
+      LangVersion is pinned explicitly because netstandard2.1 alone would otherwise default to
+      an older C# version that doesn't support records.
+    -->
+    <TargetFrameworks>net10.0;netstandard2.1</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <!--
+    bin/obj output is redirected outside this folder via Directory.Build.props (see next to
+    this file), because this project's folder also doubles as a Unity local package - Unity's
+    asset importer would otherwise pick up compiled DLLs here as stray plugins.
+  -->
 
 </Project>

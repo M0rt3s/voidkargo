@@ -14,6 +14,14 @@ A plain C# class library referenced **verbatim** by both `Game.Backend` and the 
 
 - **No dependencies on ASP.NET Core, EF Core, or Unity-specific APIs.** This project must
   compile and run unmodified inside a Unity project — keep it to plain .NET/C#.
+- **Targets `net10.0;netstandard2.1`.** The `netstandard2.1` leg exists because Unity is
+  referenced as a [local package](https://docs.unity3d.com/Manual/upm-ui-local.html) pointing
+  directly at this folder's source (see
+  [`client/Game.Client/README.md`](../../client/Game.Client/README.md)) — Unity ignores this
+  project's `.csproj` and compiles the `.cs` files itself with its own compiler, currently
+  pinned to **C# 9.0**. Avoid C# 10+-only syntax here (file-scoped namespaces, implicit
+  usings) — use explicit `using` statements and block-scoped namespaces so the same files
+  compile under both the `dotnet` SDK and Unity.
 - Treat public types here as a **contract**: changing a DTO shape affects `Game.Backend` and
   the Unity client simultaneously. Check both before merging, and update
   [data model](../01-architecture/data-model.md) / [glossary](../00-overview/glossary.md) if

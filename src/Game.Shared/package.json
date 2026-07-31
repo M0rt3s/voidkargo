@@ -1,0 +1,10 @@
+{
+  "name": "com.voidkargo.shared",
+  "version": "0.1.0",
+  "displayName": "VoidKargo - Game.Shared",
+  "description": "Shared DTOs and deterministic game-math logic used by both Game.Backend and the Unity client (Game.Client). This is the source-of-truth package referenced locally by the Unity project - do not copy or duplicate its contents.",
+  "unity": "6000.5",
+  "author": {
+    "name": "voidkargo"
+  }
+}

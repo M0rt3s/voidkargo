@@ -1,0 +1,14 @@
+<Project>
+  <!--
+    Scoped to this folder only (no other Directory.Build.props exists elsewhere in the repo).
+    Redirects bin/obj output outside src/Game.Shared/, because this folder also doubles as a
+    Unity local package (see package.json alongside Game.Shared.csproj) - Unity's asset
+    importer would otherwise pick up compiled DLLs sitting here as stray plugins, clashing with
+    the source-compiled assembly. Must live in a Directory.Build.props (not the .csproj itself)
+    so it takes effect before NuGet restore writes its own obj/ files.
+  -->
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)../../artifacts/Game.Shared/bin/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../artifacts/Game.Shared/obj/</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

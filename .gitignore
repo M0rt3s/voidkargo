@@ -54,6 +54,9 @@ client/Game.Client/*.userprefs
 ._*
 Thumbs.db
 
+### Obsidian (docs vault local workspace state) ###
+docs/.obsidian/
+
 ### Secrets ###
 *.env
 appsettings.*.local.json
