@@ -99,11 +99,19 @@ app.MapAuthEndpoints();
 // REST: client-initiated, state-heavy actions (see docs/01-architecture/networking-strategy.md).
 app.MapGet("/api/game-state", (GameDbContext db) =>
 {
-    var nodes = db.Nodes.Select(n => new NodeDto(n.Id, n.Name, n.X, n.Y, n.ResourceType, n.Stock)).ToList();
+    var nodes = db.Nodes
+        .Select(n => new NodeDto(n.Id, n.Name, n.X, n.Y, n.Kind, n.ResourceType, n.Stock, n.Level, n.StressLevel, n.FactionId))
+        .ToList();
     var players = db.Players.Select(p => new PlayerDto(p.Id, p.DisplayName, p.Cash)).ToList();
-    var trains = db.Trains.Select(t => new TrainDto(t.Id, t.OwnerPlayerId, t.FromNodeId, t.ToNodeId, t.ProgressPercent)).ToList();
+    var ships = db.Ships
+        .Select(s => new ShipDto(s.Id, s.OwnerPlayerId, s.ShipTypeId, s.FromNodeId, s.ToNodeId, s.ProgressPercent))
+        .ToList();
+    var shipTypes = db.ShipTypes
+        .Select(st => new ShipTypeDto(st.Id, st.DisplayName, st.Class, st.FactionId, st.Epoch, st.LoadCapacity, st.Speed, st.Acceleration, st.HopDistance))
+        .ToList();
+    var factions = db.Factions.Select(f => new FactionDto(f.Id, f.DisplayName, f.PaletteId)).ToList();
 
-    return Results.Ok(new GameStateSnapshotDto(nodes, players, trains));
+    return Results.Ok(new GameStateSnapshotDto(nodes, players, ships, shipTypes, factions));
 })
 .WithName("GetGameState")
 .RequireAuthorization();

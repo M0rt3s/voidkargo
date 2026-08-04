@@ -5,8 +5,8 @@
 
 ## Context
 
-The game needs to push frequent, real-time updates (train movement, economy ticks, chat) to
-many connected clients, as well as handle explicit client actions (buying a train, loading
+The game needs to push frequent, real-time updates (ship movement, economy ticks, chat) to
+many connected clients, as well as handle explicit client actions (buying a ship, loading
 initial state, fetching history/leaderboards). A single networking approach for both would
 be a poor fit for at least one of the two.
 
@@ -18,11 +18,11 @@ cause thousands of clients to simultaneously hit the REST API, risking a crash u
 
 Use a **hybrid** approach, strictly divided by who initiates the action:
 
-- **SignalR** for server-initiated, real-time pushes: train movement, economy ticks/price
+- **SignalR** for server-initiated, real-time pushes: ship movement, economy ticks/price
   changes, chat. The server pushes the actual data payload directly — not just a "go fetch"
   notification.
 - **REST API** for client-initiated, state-heavy actions: initial game-state download on
-  login, transactions (e.g., "Buy Train"), historical logs, leaderboards.
+  login, transactions (e.g., "Buy Ship"), historical logs, leaderboards.
 
 The official Microsoft `Microsoft.AspNetCore.SignalR.Client` package is used in Unity, so
 `Game.Shared` DTOs deserialize incoming WebSocket messages directly — no separate client-side
@@ -40,7 +40,7 @@ wire format.
 ## Alternatives considered
 
 - **Pure REST polling**: simplest to build, but reintroduces thundering-herd risk and adds
-  latency for real-time updates like train movement.
+  latency for real-time updates like ship movement.
 - **Pure SignalR for everything**: would force state-heavy, client-initiated actions (like
   loading full initial game state) through a persistent-connection model that's a worse fit
   than a plain request/response call, and complicates caching/retries for those actions.

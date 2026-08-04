@@ -2,12 +2,12 @@ using Game.Shared.GameLogic;
 
 namespace Game.Shared.Tests;
 
-public class TrainMovementTests
+public class ShipMovementTests
 {
     [Fact]
     public void AdvanceProgress_HalfwayThroughTravelTime_ReturnsHalfProgress()
     {
-        var result = TrainMovement.AdvanceProgress(
+        var result = ShipMovement.AdvanceProgress(
             currentProgress: 0.0,
             elapsed: TimeSpan.FromMinutes(5),
             totalTravelTime: TimeSpan.FromMinutes(10));
@@ -18,7 +18,7 @@ public class TrainMovementTests
     [Fact]
     public void AdvanceProgress_ElapsedExceedsTravelTime_ClampsToOne()
     {
-        var result = TrainMovement.AdvanceProgress(
+        var result = ShipMovement.AdvanceProgress(
             currentProgress: 0.9,
             elapsed: TimeSpan.FromMinutes(30),
             totalTravelTime: TimeSpan.FromMinutes(10));
@@ -30,6 +30,6 @@ public class TrainMovementTests
     public void AdvanceProgress_ZeroTravelTime_ThrowsArgumentOutOfRangeException()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            TrainMovement.AdvanceProgress(0.0, TimeSpan.FromMinutes(1), TimeSpan.Zero));
+            ShipMovement.AdvanceProgress(0.0, TimeSpan.FromMinutes(1), TimeSpan.Zero));
     }
 }

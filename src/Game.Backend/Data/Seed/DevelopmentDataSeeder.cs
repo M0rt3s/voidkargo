@@ -1,5 +1,6 @@
 using Game.Backend.Entities;
 using Game.Shared.Auth;
+using Game.Shared.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,21 +38,66 @@ public sealed class DevelopmentDataSeeder(IServiceProvider services, ILogger<Dev
 
         logger.LogInformation("Seeding development database with a playable slice of the game...");
 
-        var nodeA = new NodeEntity { Id = Guid.NewGuid(), Name = "Riverside Depot", X = 0, Y = 0, ResourceType = "Grain", Stock = 500 };
-        var nodeB = new NodeEntity { Id = Guid.NewGuid(), Name = "Ironhold Yard", X = 120, Y = 40, ResourceType = "Ore", Stock = 300 };
+        // Placeholder faction for the first playable slice; real faction identities/palettes
+        // (see the planned procedural art pipeline ADR) will be authored alongside their art
+        // genomes.
+        var faction = new FactionEntity { Id = "kolyma-syndicate", DisplayName = "Kolyma Syndicate", PaletteId = "kolyma-syndicate-default" };
+
+        var shipType = new ShipTypeEntity
+        {
+            Id = "vk.ship.light.strelka",
+            DisplayName = "Strelka",
+            Class = ShipClass.LightHauler,
+            FactionId = faction.Id,
+            Epoch = 1,
+            LoadCapacity = 50,
+            Speed = 12,
+            Acceleration = 4,
+            HopDistance = 6,
+        };
+
+        var stationNode = new NodeEntity
+        {
+            Id = Guid.NewGuid(),
+            Name = "Riverside Depot",
+            X = 0,
+            Y = 0,
+            Kind = NodeKind.Station,
+            ResourceType = "Grain",
+            Stock = 500,
+            Level = 1,
+            StressLevel = 0.0,
+            FactionId = faction.Id,
+        };
+        var productionNode = new NodeEntity
+        {
+            Id = Guid.NewGuid(),
+            Name = "Ironhold Yard",
+            X = 120,
+            Y = 40,
+            Kind = NodeKind.ProductionSite,
+            ResourceType = "Ore",
+            Stock = 300,
+            Level = 1,
+            StressLevel = 0.0,
+            FactionId = faction.Id,
+        };
         var player = new PlayerEntity { Id = Guid.NewGuid(), DisplayName = "dev-player", Cash = 10_000m };
-        var train = new TrainEntity
+        var ship = new ShipEntity
         {
             Id = Guid.NewGuid(),
             OwnerPlayerId = player.Id,
-            FromNodeId = nodeA.Id,
-            ToNodeId = nodeB.Id,
+            ShipTypeId = shipType.Id,
+            FromNodeId = stationNode.Id,
+            ToNodeId = productionNode.Id,
             ProgressPercent = 0.0,
         };
 
-        db.Nodes.AddRange(nodeA, nodeB);
+        db.Factions.Add(faction);
+        db.ShipTypes.Add(shipType);
+        db.Nodes.AddRange(stationNode, productionNode);
         db.Players.Add(player);
-        db.Trains.Add(train);
+        db.Ships.Add(ship);
 
         await db.SaveChangesAsync(cancellationToken);
 

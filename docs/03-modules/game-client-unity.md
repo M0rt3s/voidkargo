@@ -12,7 +12,7 @@ referenced as a Unity local package and its C# compatibility constraints.
 
 ## Responsibilities
 
-- All rendering/visuals for the game map, trains, and UI.
+- All rendering/visuals for the game map, ships, stations/planets, and UI.
 - UI built with Unity **UI Toolkit** (UXML/USS) — deliberately close to HTML/CSS.
 - Consumes `Game.Shared` DTOs directly, both for REST responses and for deserializing SignalR
   messages (via the official `Microsoft.AspNetCore.SignalR.Client` package, which works in

@@ -47,7 +47,7 @@ ports, and prerequisites.
 - **`Game.Shared` is a contract**: if you change a DTO or public type there, check both
   `Game.Backend` usages and note it in the module doc — the Unity client depends on the same file.
 - **SignalR vs REST**: server-initiated/real-time data (moves, ticks, chat) goes over SignalR;
-  client-initiated heavy actions (buy train, initial state load, history/leaderboards) go over
+  client-initiated heavy actions (buy ship, initial state load, history/leaderboards) go over
   REST. Don't blur this — see
   [`docs/01-architecture/networking-strategy.md`](docs/01-architecture/networking-strategy.md).
 - **Big/expensive-to-reverse decisions are recorded as ADRs** in `docs/02-decisions/`. Read the

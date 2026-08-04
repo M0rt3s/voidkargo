@@ -6,7 +6,7 @@ and validation.
 ## Responsibilities
 
 - Owns game state; validates and applies all player actions.
-- Hosts SignalR hubs that push real-time updates (train movement, economy ticks, chat) — see
+- Hosts SignalR hubs that push real-time updates (ship movement, economy ticks, chat) — see
   [networking strategy](../01-architecture/networking-strategy.md).
 - Exposes REST endpoints for client-initiated, state-heavy actions (initial state load,
   transactions, history/leaderboards).

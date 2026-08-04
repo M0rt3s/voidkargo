@@ -16,7 +16,11 @@ public sealed class GameDbContext(DbContextOptions<GameDbContext> options)
 
     public DbSet<PlayerEntity> Players => Set<PlayerEntity>();
 
-    public DbSet<TrainEntity> Trains => Set<TrainEntity>();
+    public DbSet<ShipEntity> Ships => Set<ShipEntity>();
+
+    public DbSet<ShipTypeEntity> ShipTypes => Set<ShipTypeEntity>();
+
+    public DbSet<FactionEntity> Factions => Set<FactionEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,6 +29,8 @@ public sealed class GameDbContext(DbContextOptions<GameDbContext> options)
 
         modelBuilder.Entity<NodeEntity>().HasKey(n => n.Id);
         modelBuilder.Entity<PlayerEntity>().HasKey(p => p.Id);
-        modelBuilder.Entity<TrainEntity>().HasKey(t => t.Id);
+        modelBuilder.Entity<ShipEntity>().HasKey(s => s.Id);
+        modelBuilder.Entity<ShipTypeEntity>().HasKey(st => st.Id);
+        modelBuilder.Entity<FactionEntity>().HasKey(f => f.Id);
     }
 }

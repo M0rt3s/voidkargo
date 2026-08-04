@@ -10,7 +10,7 @@ Used to push actual data payloads, avoiding a "thundering herd" where a bare not
 once.
 
 Use cases:
-- Train movement updates.
+- Ship movement updates.
 - Economy ticks / price changes.
 - Player chat.
 
@@ -22,7 +22,7 @@ flow end to end with no duplicate client-side models.
 
 Reserved for explicit actions where a short loading delay is acceptable:
 - Downloading initial game state on login.
-- Player transactions (e.g., "Buy Train").
+- Player transactions (e.g., "Buy Ship").
 - Fetching historical logs / leaderboards.
 
 ## Rule of thumb

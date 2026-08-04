@@ -5,7 +5,7 @@
 
 ## Context
 
-The game needs a real-time, smoothly-animated map/canvas (trains moving, economy updates)
+The game needs a real-time, smoothly-animated map/canvas (ships moving, economy updates)
 across browser, iOS, and Android, while keeping the entire team (a solo C#/.NET developer)
 inside one language and ecosystem for maximum code reuse and velocity.
 

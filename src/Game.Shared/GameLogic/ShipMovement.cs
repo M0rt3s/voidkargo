@@ -11,11 +11,14 @@ namespace Game.Shared.GameLogic
     /// (Game.Backend) and the client's optimistic/predictive rendering (Game.Client).
     /// Keep this dependency-free and deterministic so both sides always agree.
     /// </summary>
-    public static class TrainMovement
+    public static class ShipMovement
     {
         /// <summary>
-        /// Computes the new progress (0.0-1.0) of a train along its route after
-        /// <paramref name="elapsed"/> has passed, given the route's total travel time.
+        /// Computes the new progress (0.0-1.0) of a ship along its current hop after
+        /// <paramref name="elapsed"/> has passed, given the hop's total travel time.
+        /// There is no track/route to lay - a ship's hop distance is one of its stats
+        /// (see <see cref="Game.Shared.Dtos.ShipTypeDto"/>), so this only advances a
+        /// linear progress fraction between two Nodes.
         /// </summary>
         public static double AdvanceProgress(double currentProgress, TimeSpan elapsed, TimeSpan totalTravelTime)
         {
