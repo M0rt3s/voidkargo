@@ -14,11 +14,37 @@ A plain C# class library referenced **verbatim** by both `Game.Backend` and the 
   `wwwroot/css/tokens.css` and consumed directly by Unity once its UI is built. See
   [ADR 0004](../02-decisions/0004-design-language-and-ui-foundation.md) and
   [docs/05-design](../05-design/design-language.md).
-- `Art/` (planned) — the deterministic, genome-driven procedural pixel-art generator for ships
-  and stations (silhouette/module generation, indexed-canvas rendering, palette validation, PNG
-  encoding). No Unity/ASP.NET Core dependency, so both `Game.Backend` tooling and the Unity
-  Editor's bake step can call it. See
-  [ADR 0006](../02-decisions/0006-procedural-indexed-palette-art-pipeline.md).
+- `Art/` — the deterministic, genome-driven procedural pixel-art generator for ships and
+  stations. No Unity/ASP.NET Core dependency, so both `Game.Backend` tooling and the Unity
+  Editor's future bake step ("Foundry", tracked separately) can call it. See
+  [ADR 0006](../02-decisions/0006-procedural-indexed-palette-art-pipeline.md) for the full
+  design; the module currently contains:
+  - `Rng/Pcg32.cs` — the dependency-free deterministic PRNG (PCG XSH-RR) every other pass uses
+    instead of `System.Random`, plus a per-pixel order-independent hash (`HashToUnit`).
+  - `Json/JsonValue.cs` — a minimal, dependency-free JSON model/parser/writer (no
+    `System.Text.Json`, which isn't inbox in `netstandard2.1`) used to (de)serialize genomes.
+  - `Genome/` — `ShipGenome` and its component records (canvas, silhouette/spine, modules,
+    greebles, palette zone map), `GenomeJson` for JSON (de)serialization, and `GenomeValidator`,
+    the style linter (class-specific thickness ranges, module-vs-epoch gating, zone-map
+    completeness, canvas-size constraint).
+  - `Palette/` — `Palette` (a 16-colour indexed row) and `PaletteValidator`, which checks
+    contrast against the game's dark backdrop and pairwise separability under simulated
+    protanopia/deuteranopia/tritanopia (a deliberately pragmatic, not clinically exact,
+    approximation — see the accessibility goal in the top-level plan).
+  - `Canvas/IndexedCanvas.cs` — the palette-index/glow/alpha pixel-plane buffer sprites are
+    rendered into, plus the nearest-neighbour integer upscale used to reach the final texture size.
+  - `Rendering/ShipRenderer.cs` — the full deterministic pass pipeline (spine/mass stamping,
+    module placement, mirroring, morphological cleanup, distance-transform shading with ordered
+    dithering, greebles, emissive marking, outline, wear) and `ValidationResult`, the shared
+    result type both validators return.
+  - `Encoding/PngEncoder.cs` (+ `Crc32`/`Adler32` helpers) — a minimal PNG writer with no
+    `System.Drawing`/ImageSharp dependency, so the same code runs under Unity's C# 9 toolchain
+    and the `dotnet` SDK.
+
+  Not yet built: the Unity "Foundry" editor window (load/preview/bake genomes into an atlas +
+  palette LUT), the `PixelPalette` URP shader that samples the index/glow planes against a
+  palette LUT at render time, and the bitmap hull-number decal font (the wear pass currently
+  covers the "worn" look on its own — see the MVP-scope remark on `ShipRenderer`).
 
 ## Rules
 
