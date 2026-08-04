@@ -27,10 +27,13 @@ A plain C# class library referenced **verbatim** by both `Game.Backend` and the 
     greebles, palette zone map), `GenomeJson` for JSON (de)serialization, and `GenomeValidator`,
     the style linter (class-specific thickness ranges, module-vs-epoch gating, zone-map
     completeness, canvas-size constraint).
-  - `Palette/` — `Palette` (a 16-colour indexed row) and `PaletteValidator`, which checks
-    contrast against the game's dark backdrop and pairwise separability under simulated
-    protanopia/deuteranopia/tritanopia (a deliberately pragmatic, not clinically exact,
-    approximation — see the accessibility goal in the top-level plan).
+  - `Palette/` — `Palette` (a 16-colour indexed row), `PaletteJson` for JSON (de)serialization
+    (mirrors `GenomeJson`), `PaletteValidator`, which checks contrast against the game's dark
+    backdrop and pairwise separability under simulated protanopia/deuteranopia/tritanopia (a
+    deliberately pragmatic, not clinically exact, approximation — see the accessibility goal in
+    the top-level plan), and `PaletteLutBaker`, which lays out multiple palettes into a single
+    row-per-palette RGBA image — the shared LUT texture a future URP shader samples so a
+    faction/cosmetic skin is a data change (a LUT row), not a new texture asset.
   - `Canvas/IndexedCanvas.cs` — the palette-index/glow/alpha pixel-plane buffer sprites are
     rendered into, plus the nearest-neighbour integer upscale used to reach the final texture size.
   - `Rendering/ShipRenderer.cs` — the full deterministic pass pipeline (spine/mass stamping,
@@ -39,12 +42,52 @@ A plain C# class library referenced **verbatim** by both `Game.Backend` and the 
     result type both validators return.
   - `Encoding/PngEncoder.cs` (+ `Crc32`/`Adler32` helpers) — a minimal PNG writer with no
     `System.Drawing`/ImageSharp dependency, so the same code runs under Unity's C# 9 toolchain
-    and the `dotnet` SDK.
+    and the `dotnet` SDK. Supports both indexed-canvas sprites (`Encode`) and arbitrary raw RGBA
+    buffers (`EncodeRgba`, used by `PaletteLutBaker`).
 
-  Not yet built: the Unity "Foundry" editor window (load/preview/bake genomes into an atlas +
-  palette LUT), the `PixelPalette` URP shader that samples the index/glow planes against a
+  Content files (genomes, palettes) live outside this project, in the repo-root
+  [`content/`](../../content/) directory — see "Content and the Foundry editor tool" below.
+
+  Not yet built: the `PixelPalette` URP shader that samples the index/glow planes against a
   palette LUT at render time, and the bitmap hull-number decal font (the wear pass currently
   covers the "worn" look on its own — see the MVP-scope remark on `ShipRenderer`).
+
+## Content and the Foundry editor tool
+
+Ship genomes and palettes are authored as plain JSON files in the repo-root `content/` directory,
+**not** inside Unity's `Assets/`, since both `Game.Backend` tooling and the Unity Editor need to
+read the same files and raw JSON has no reason to be bundled into a Unity build:
+
+- [`content/ship-genomes/*.json`](../../content/ship-genomes/) — one file per `ShipGenome`,
+  file name (minus `.json`) matching both `ShipGenome.Id` and the corresponding
+  `ShipTypeDto.Id`/`ShipTypeEntity.Id` in `Game.Backend`.
+- [`content/palettes/*.json`](../../content/palettes/) — one file per `Palette`, file name
+  matching both `Palette.Id` and the owning faction's `FactionDto.PaletteId`.
+
+Every file here is exercised by `tests/Game.Shared.Tests/Art/ContentTests.cs`, which discovers
+all genome/palette files, parses, validates, renders, and encodes each of them — the
+"regenerating test" AGENTS.md requires for any generated art committed to the repo. A genome or
+palette that fails validation fails `dotnet test`, without needing Unity installed.
+
+The Unity-side "Foundry" editor window
+(`client/Game.Client/Assets/Scripts/Editor/Foundry/FoundryWindow.cs`, menu item
+**VoidKargo > Foundry**) reads the same `content/` files via plain `System.IO` (resolving the
+repo root by walking up from `Application.dataPath` until it finds `voidkargo.slnx`), lists every
+genome/palette with pass/fail validation status, previews a genome rendered against any loaded
+palette, and bakes:
+
+- Ship sprites to `Assets/Art/Generated/Ships/<genome id>.png`.
+- The combined palette LUT to `Assets/Art/Generated/PaletteLut.png` (one row per valid palette).
+
+Baked textures are configured (point filter, uncompressed, no mipmaps, `sRGBTexture = false`)
+since they encode data (palette index / glow / alpha), not colour to display directly, and are
+committed to git alongside their source genome/palette and the `ContentTests` coverage.
+
+**Verification note:** `FoundryWindow.cs` was authored without a local Unity install available in
+this environment (no editor version was installed under Unity Hub) — its `EditorWindow`/
+`AssetDatabase`/`TextureImporter` usage could only be reviewed, not compiled. Open the project in
+Unity 6000.5.6f1 and check the Editor Console after pulling this change; if anything doesn't
+compile, that's expected to need a follow-up fix.
 
 ## Rules
 

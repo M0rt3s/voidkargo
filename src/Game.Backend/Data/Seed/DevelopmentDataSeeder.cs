@@ -38,9 +38,12 @@ public sealed class DevelopmentDataSeeder(IServiceProvider services, ILogger<Dev
 
         logger.LogInformation("Seeding development database with a playable slice of the game...");
 
-        // Placeholder faction for the first playable slice; real faction identities/palettes
-        // (see ADR 0006) will be authored alongside their art genomes.
+        // Two factions with real palettes/genomes committed under content/palettes and
+        // content/ship-genomes (see ADR 0006 and docs/03-modules/game-shared.md) - their
+        // FactionEntity.PaletteId and ShipTypeEntity.Id below intentionally match the content
+        // file names so backend catalog data and art content share one identity.
         var faction = new FactionEntity { Id = "kolyma-syndicate", DisplayName = "Kolyma Syndicate", PaletteId = "kolyma-syndicate-default" };
+        var secondFaction = new FactionEntity { Id = "ledovka-combine", DisplayName = "Ledovka Combine", PaletteId = "ledovka-combine-default" };
 
         var shipType = new ShipTypeEntity
         {
@@ -53,6 +56,18 @@ public sealed class DevelopmentDataSeeder(IServiceProvider services, ILogger<Dev
             Speed = 12,
             Acceleration = 4,
             HopDistance = 6,
+        };
+        var secondShipType = new ShipTypeEntity
+        {
+            Id = "vk.ship.medium.burlak",
+            DisplayName = "Burlak",
+            Class = ShipClass.MediumHauler,
+            FactionId = secondFaction.Id,
+            Epoch = 2,
+            LoadCapacity = 140,
+            Speed = 7,
+            Acceleration = 2,
+            HopDistance = 4,
         };
 
         var stationNode = new NodeEntity
@@ -92,8 +107,8 @@ public sealed class DevelopmentDataSeeder(IServiceProvider services, ILogger<Dev
             ProgressPercent = 0.0,
         };
 
-        db.Factions.Add(faction);
-        db.ShipTypes.Add(shipType);
+        db.Factions.AddRange(faction, secondFaction);
+        db.ShipTypes.AddRange(shipType, secondShipType);
         db.Nodes.AddRange(stationNode, productionNode);
         db.Players.Add(player);
         db.Ships.Add(ship);

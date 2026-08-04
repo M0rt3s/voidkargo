@@ -1,0 +1,35 @@
+{
+  "id": "vk.ship.light.strelka",
+  "class": "LightHauler",
+  "factionId": "kolyma-syndicate",
+  "epoch": 1,
+  "seed": 1001,
+  "canvas": { "logical": 64, "scale": 4 },
+  "silhouette": {
+    "spine": [
+      { "x": 32, "y": 4, "thickness": 1.5 },
+      { "x": 31, "y": 16, "thickness": 2.5 },
+      { "x": 32, "y": 32, "thickness": 3.5 },
+      { "x": 33, "y": 48, "thickness": 2.5 },
+      { "x": 32, "y": 60, "thickness": 1.5 }
+    ],
+    "asymmetryBudget": 1.0
+  },
+  "modules": [
+    { "kind": "Engine", "anchorX": 32, "anchorY": 61, "count": 2, "size": 2.5, "emissive": true },
+    { "kind": "Cargo", "anchorX": 32, "anchorY": 28, "count": 1, "size": 5, "emissive": false },
+    { "kind": "Antenna", "anchorX": 32, "anchorY": 8, "count": 1, "size": 2, "emissive": false }
+  ],
+  "greebles": { "density": 0.18, "style": "slavic-industrial" },
+  "zones": {
+    "hull": 9,
+    "hull_shadow": 11,
+    "hull_light": 13,
+    "trim": 3,
+    "accent": 5,
+    "glass": 8,
+    "emissive": 12,
+    "outline": 4
+  },
+  "wear": 0.15
+}

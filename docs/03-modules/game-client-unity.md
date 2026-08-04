@@ -19,6 +19,22 @@ referenced as a Unity local package and its C# compatibility constraints.
   Unity).
 - Exports to three targets from one codebase: WebGL, iOS, Android.
 
+## Editor tooling: Foundry
+
+`Assets/Scripts/Editor/Foundry/FoundryWindow.cs` (menu item **VoidKargo > Foundry**) is the
+Editor-only window for the procedural pixel-art pipeline described in
+[ADR 0006](../02-decisions/0006-procedural-indexed-palette-art-pipeline.md): it loads ship
+genomes and palettes from the repo-root [`content/`](../../content/) directory, previews a genome
+rendered against any loaded palette, and bakes ship sprites / the combined palette LUT into
+`Assets/Art/Generated/...` with the correct (point-filtered, uncompressed, non-sRGB) import
+settings for an indexed data texture. See
+[`docs/03-modules/game-shared.md`](game-shared.md#content-and-the-foundry-editor-tool) for the
+full content-file/testing story — this file only covers the Unity-side tool itself.
+
+It lives directly under `Assets/Scripts/Editor/` (no dedicated `.asmdef`) so it automatically
+picks up `Game.Shared`'s `autoReferenced: true` local-package assembly, and only compiles into
+the Editor, never a player build, by virtue of Unity's `Editor`-folder convention.
+
 ## Networking
 
 Same split as the rest of the system — see

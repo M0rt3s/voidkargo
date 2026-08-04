@@ -35,10 +35,35 @@ namespace Game.Shared.Art.Encoding
 
         public static byte[] Encode(IndexedCanvas canvas)
         {
+            return EncodeCore(canvas.Width, canvas.Height, (x, y) =>
+                (canvas.GetIndex(x, y), canvas.GetGlow(x, y), (byte)0, canvas.GetAlpha(x, y)));
+        }
+
+        /// <summary>
+        /// Encodes an arbitrary raw RGBA8 buffer (row-major, 4 bytes/pixel) as a PNG - used for
+        /// artifacts that are plain colour, not index/glow/alpha planes, such as the palette LUT
+        /// texture baked by <c>Palette/PaletteLutBaker.cs</c>.
+        /// </summary>
+        public static byte[] EncodeRgba(int width, int height, byte[] rgba)
+        {
+            if (rgba.Length != width * height * 4)
+            {
+                throw new ArgumentException($"Expected a {width * height * 4}-byte RGBA buffer for a {width}x{height} image, got {rgba.Length} bytes.", nameof(rgba));
+            }
+
+            return EncodeCore(width, height, (x, y) =>
+            {
+                var offset = (y * width + x) * 4;
+                return (rgba[offset], rgba[offset + 1], rgba[offset + 2], rgba[offset + 3]);
+            });
+        }
+
+        private static byte[] EncodeCore(int width, int height, Func<int, int, (byte R, byte G, byte B, byte A)> pixelAt)
+        {
             using var output = new MemoryStream();
             output.Write(Signature, 0, Signature.Length);
-            WriteChunk(output, "IHDR", BuildIhdr(canvas.Width, canvas.Height));
-            WriteChunk(output, "IDAT", BuildIdat(canvas));
+            WriteChunk(output, "IHDR", BuildIhdr(width, height));
+            WriteChunk(output, "IDAT", BuildIdat(width, height, pixelAt));
             WriteChunk(output, "IEND", Array.Empty<byte>());
             return output.ToArray();
         }
@@ -56,9 +81,9 @@ namespace Game.Shared.Art.Encoding
             return data;
         }
 
-        private static byte[] BuildIdat(IndexedCanvas canvas)
+        private static byte[] BuildIdat(int width, int height, Func<int, int, (byte R, byte G, byte B, byte A)> pixelAt)
         {
-            var raw = BuildRawScanlines(canvas);
+            var raw = BuildRawScanlines(width, height, pixelAt);
 
             byte[] deflated;
             using (var compressed = new MemoryStream())
@@ -79,22 +104,23 @@ namespace Game.Shared.Art.Encoding
             return zlib.ToArray();
         }
 
-        private static byte[] BuildRawScanlines(IndexedCanvas canvas)
+        private static byte[] BuildRawScanlines(int width, int height, Func<int, int, (byte R, byte G, byte B, byte A)> pixelAt)
         {
             const int bytesPerPixel = 4;
-            var stride = canvas.Width * bytesPerPixel;
-            var raw = new byte[(stride + 1) * canvas.Height];
+            var stride = width * bytesPerPixel;
+            var raw = new byte[(stride + 1) * height];
 
             var offset = 0;
-            for (var y = 0; y < canvas.Height; y++)
+            for (var y = 0; y < height; y++)
             {
                 raw[offset++] = 0; // scanline filter type: None
-                for (var x = 0; x < canvas.Width; x++)
+                for (var x = 0; x < width; x++)
                 {
-                    raw[offset++] = canvas.GetIndex(x, y);
-                    raw[offset++] = canvas.GetGlow(x, y);
-                    raw[offset++] = 0; // reserved
-                    raw[offset++] = canvas.GetAlpha(x, y);
+                    var (r, g, b, a) = pixelAt(x, y);
+                    raw[offset++] = r;
+                    raw[offset++] = g;
+                    raw[offset++] = b;
+                    raw[offset++] = a;
                 }
             }
 

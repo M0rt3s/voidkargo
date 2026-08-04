@@ -21,6 +21,7 @@ in [`docs/01-architecture/system-architecture.md`](docs/01-architecture/system-a
 | `src/Game.AppHost` | .NET Aspire orchestration entry point for local dev (`dotnet run` here starts everything). |
 | `src/Game.ServiceDefaults` | Shared Aspire service defaults (telemetry, health checks, resilience). |
 | `tests/` | xUnit test projects, one per `src/` project that has logic worth testing. |
+| `content/` | Shared JSON content: ship genomes (`ship-genomes/`) and palettes (`palettes/`) consumed by `Game.Shared`'s art pipeline (ADR 0006), the Unity "Foundry" editor tool, and `Game.Shared.Tests/Art/ContentTests.cs`. |
 | `client/Game.Client` | Unity project (WebGL + iOS + Android). Not scaffolded via CLI — see its own README. |
 | `docs/` | The documentation vault. Start at [`docs/README.md`](docs/README.md). |
 
