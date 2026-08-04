@@ -22,6 +22,7 @@ exactly where to look and what they need, without wading through a huge unmainta
   - [0002 — Unity as the client engine](02-decisions/0002-unity-as-client-engine.md)
   - [0003 — SignalR + REST hybrid networking](02-decisions/0003-signalr-plus-rest-hybrid-networking.md)
   - [0004 — Design language and UI foundation](02-decisions/0004-design-language-and-ui-foundation.md)
+  - [0005 — JWT (Backend) + cookie (Website) hybrid authentication](02-decisions/0005-jwt-plus-cookie-hybrid-auth.md)
 - **[03-modules](03-modules/game-backend.md)** — one short doc per project.
   - [Game.Backend](03-modules/game-backend.md)
   - [Game.Shared](03-modules/game-shared.md)

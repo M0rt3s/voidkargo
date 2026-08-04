@@ -22,4 +22,32 @@
             <span class="nav-item__label">Weather</span>
         </NavLink>
     </nav>
+
+    <nav class="nav-group">
+        <span class="vk-label vk-label--dim nav-group__title">Account</span>
+
+        <AuthorizeView>
+            <Authorized>
+                <NavLink class="nav-item" href="profile">
+                    <span class="nav-item__label">Profile (@context.User.FindFirst("display_name")?.Value)</span>
+                </NavLink>
+
+                <form method="post" action="/account/logout">
+                    <AntiforgeryToken />
+                    <button class="nav-item nav-item--button" type="submit">
+                        <span class="nav-item__label">Log out</span>
+                    </button>
+                </form>
+            </Authorized>
+            <NotAuthorized>
+                <NavLink class="nav-item" href="login">
+                    <span class="nav-item__label">Log in</span>
+                </NavLink>
+
+                <NavLink class="nav-item" href="register">
+                    <span class="nav-item__label">Register</span>
+                </NavLink>
+            </NotAuthorized>
+        </AuthorizeView>
+    </nav>
 </div>

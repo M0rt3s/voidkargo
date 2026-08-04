@@ -1,0 +1,61 @@
+@page "/login"
+
+<PageTitle>Log in — voidkargo</PageTitle>
+
+<div class="vk-auth-shell vk-stack">
+    <div class="vk-section-head">
+        <span class="vk-label vk-label--dim">Operator access</span>
+        <h1>Log in</h1>
+    </div>
+
+    @if (ErrorMessage is not null)
+    {
+        <VkAlert Variant="VkAlertVariant.Danger">@ErrorMessage</VkAlert>
+    }
+
+    <div class="vk-panel">
+        <div class="vk-panel__body">
+            @* Plain form POST (not EditForm/@onclick): signing in sets a cookie, which must
+               happen on a normal request/response, not mid-way through a Blazor circuit. *@
+            <form method="post" action="/account/login">
+                <AntiforgeryToken />
+                <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
+
+                <div class="mb-3">
+                    <label class="form-label" for="userName">Username</label>
+                    <input class="form-control" id="userName" name="UserName" autocomplete="username" required autofocus />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-control" id="password" name="Password" type="password" autocomplete="current-password" required />
+                </div>
+
+                <button class="btn btn-primary w-100" type="submit">Log in</button>
+            </form>
+        </div>
+    </div>
+
+    <p class="vk-text-muted mb-0">
+        No account yet? <a href="@RegisterHref">Register</a>.
+    </p>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string? Error { get; set; }
+
+    private string? ErrorMessage => Error switch
+    {
+        "invalid-credentials" => "Incorrect username or password.",
+        "unexpected-response" => "Something went wrong talking to the server. Please try again.",
+        _ => null,
+    };
+
+    private string RegisterHref => string.IsNullOrWhiteSpace(ReturnUrl)
+        ? "/register"
+        : $"/register?returnUrl={Uri.EscapeDataString(ReturnUrl)}";
+}

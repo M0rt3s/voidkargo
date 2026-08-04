@@ -1,5 +1,6 @@
 using Game.Backend.Data;
 using Game.Backend.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Game.Backend.Tests;
@@ -46,5 +47,23 @@ public class GameDbContextTests
         var stored = await db.Trains.SingleAsync(t => t.Id == train.Id);
         Assert.Equal(player.Id, stored.OwnerPlayerId);
         Assert.Equal(0.25, stored.ProgressPercent);
+    }
+
+    [Fact]
+    public async Task AddingUserWithRole_CanBeReadBack()
+    {
+        await using var db = CreateContext();
+        var role = new IdentityRole<Guid> { Id = Guid.NewGuid(), Name = "Player", NormalizedName = "PLAYER" };
+        var user = new UserEntity { Id = Guid.NewGuid(), UserName = "player", NormalizedUserName = "PLAYER", DisplayName = "Dev Player" };
+        var userRole = new IdentityUserRole<Guid> { UserId = user.Id, RoleId = role.Id };
+
+        db.Roles.Add(role);
+        db.Users.Add(user);
+        db.UserRoles.Add(userRole);
+        await db.SaveChangesAsync();
+
+        var storedUser = await db.Users.SingleAsync(u => u.Id == user.Id);
+        Assert.Equal("Dev Player", storedUser.DisplayName);
+        Assert.Single(await db.UserRoles.Where(ur => ur.UserId == user.Id).ToListAsync());
     }
 }

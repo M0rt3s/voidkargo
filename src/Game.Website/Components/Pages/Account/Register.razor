@@ -1,0 +1,77 @@
+@page "/register"
+
+<PageTitle>Register — voidkargo</PageTitle>
+
+<div class="vk-auth-shell vk-stack">
+    <div class="vk-section-head">
+        <span class="vk-label vk-label--dim">New operator</span>
+        <h1>Register</h1>
+    </div>
+
+    @if (ErrorMessage is not null)
+    {
+        <VkAlert Variant="VkAlertVariant.Danger">@ErrorMessage</VkAlert>
+    }
+
+    <div class="vk-panel">
+        <div class="vk-panel__body">
+            @* Plain form POST — see Login.razor for why this isn't an EditForm/@onclick handler. *@
+            <form method="post" action="/account/register">
+                <AntiforgeryToken />
+                <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
+
+                <div class="mb-3">
+                    <label class="form-label" for="userName">Username</label>
+                    <input class="form-control" id="userName" name="UserName" autocomplete="username" required autofocus />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="displayName">Display name</label>
+                    <input class="form-control" id="displayName" name="DisplayName" autocomplete="name" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="email">Email</label>
+                    <input class="form-control" id="email" name="Email" type="email" autocomplete="email" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-control" id="password" name="Password" type="password" autocomplete="new-password" required />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label" for="confirmPassword">Confirm password</label>
+                    <input class="form-control" id="confirmPassword" name="ConfirmPassword" type="password" autocomplete="new-password" required />
+                </div>
+
+                <button class="btn btn-primary w-100" type="submit">Create account</button>
+            </form>
+        </div>
+    </div>
+
+    <p class="vk-text-muted mb-0">
+        Public registration always grants the Player role. Already have an account?
+        <a href="@LoginHref">Log in</a>.
+    </p>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string? Error { get; set; }
+
+    private string? ErrorMessage => Error switch
+    {
+        "password-mismatch" => "Password and confirmation do not match.",
+        "registration-failed" => "Could not create that account. The username or email may already be taken.",
+        "unexpected-response" => "Something went wrong talking to the server. Please try again.",
+        _ => null,
+    };
+
+    private string LoginHref => string.IsNullOrWhiteSpace(ReturnUrl)
+        ? "/login"
+        : $"/login?returnUrl={Uri.EscapeDataString(ReturnUrl)}";
+}

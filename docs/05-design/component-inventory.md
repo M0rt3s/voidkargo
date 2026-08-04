@@ -16,11 +16,13 @@ CSS classes where one of these already fits.
 - **`VkButton`** — ✅ confirmed, no wrapper built. `.btn-primary` / `.btn-secondary` /
   `.btn-outline-primary` / `.btn-danger` cover every case via Bootstrap's own `<button
   class="btn ...">` markup, themed in `bootstrap-bridge.css`.
-- **Auth forms** (login / register) — not built yet. There's no auth backend (no Identity, no
-  login/register endpoints) to wire a real form to, so building the markup now would just be
-  thrown away. When the backend lands: use `.vk-panel` as the card, Bootstrap `.form-control` /
-  `.form-label` (already themed) for fields, centred in a max-width column (~420px) — don't
-  stretch auth forms to `--vk-content-max`. `VkAlert` (below) is ready for the inline error case.
+- **Auth forms** (login / register / profile) — ✅ built: `Components/Pages/Account/Login.razor`,
+  `Register.razor`, `Profile.razor`. Plain `<form method="post">` + `<AntiforgeryToken />` (not
+  `EditForm`) posting to non-interactive `/account/*` minimal API endpoints — see [ADR
+  0005](../02-decisions/0005-jwt-plus-cookie-hybrid-auth.md). Each uses `.vk-auth-shell` (a new
+  420px-max-width centred column utility in `voidkargo.css`) as the outer wrapper, `.vk-panel`
+  as the card, Bootstrap `.form-control` / `.form-label` for fields, and `VkAlert` (below) for
+  inline errors surfaced via `?error=` query params.
 - **`VkAlert`** — ✅ built: `Components/Ui/VkAlert.razor` (+ `.razor.css`,
   `VkAlertVariant.cs`). A `.vk-panel` with a 3px `border-left` accent in
   `--vk-danger` / `--vk-warning` / `--vk-success` / `--vk-info`; `Variant`, optional `Title`,

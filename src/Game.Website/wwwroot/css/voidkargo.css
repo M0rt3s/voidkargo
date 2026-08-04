@@ -362,6 +362,17 @@ code, kbd, samp, pre {
     width: 100%;
 }
 
+/*
+ * Auth forms (login/register/profile) never stretch to --vk-content-max — a single narrow
+ * column reads better for short forms. See docs/05-design/component-inventory.md.
+ */
+.vk-auth-shell {
+    margin-inline: auto;
+    max-width: 420px;
+    padding-block: var(--vk-space-7);
+    width: 100%;
+}
+
 .vk-stack > * + * { margin-top: var(--vk-space-4); }
 .vk-stack--tight > * + * { margin-top: var(--vk-space-2); }
 .vk-stack--loose > * + * { margin-top: var(--vk-space-6); }

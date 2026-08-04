@@ -1,0 +1,64 @@
+@page "/profile"
+@attribute [Authorize]
+@using System.Security.Claims
+
+<PageTitle>Profile — voidkargo</PageTitle>
+
+<div class="vk-auth-shell vk-stack">
+    <div class="vk-section-head">
+        <span class="vk-label vk-label--dim">Operator profile</span>
+        <h1>@DisplayName</h1>
+    </div>
+
+    <div class="vk-panel">
+        <div class="vk-panel__header">
+            <span class="vk-label">Account</span>
+        </div>
+        <div class="vk-panel__body vk-stack">
+            <div>
+                <span class="vk-label vk-label--dim">Username</span>
+                <p class="vk-text-strong mb-0">@UserName</p>
+            </div>
+            <div>
+                <span class="vk-label vk-label--dim">Email</span>
+                <p class="vk-text-strong mb-0">@Email</p>
+            </div>
+            <div>
+                <span class="vk-label vk-label--dim">Authorization level@(Roles.Count == 1 ? "" : "s")</span>
+                <p class="mb-0">
+                    @foreach (var role in Roles)
+                    {
+                        <span class="vk-status vk-status--live me-2">@role</span>
+                    }
+                </p>
+            </div>
+        </div>
+        <div class="vk-panel__footer">
+            <form method="post" action="/account/logout">
+                <AntiforgeryToken />
+                <button class="btn btn-secondary" type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public required Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private string DisplayName { get; set; } = string.Empty;
+    private string UserName { get; set; } = string.Empty;
+    private string Email { get; set; } = string.Empty;
+    private IReadOnlyList<string> Roles { get; set; } = Array.Empty<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationStateTask;
+        var user = state.User;
+
+        DisplayName = user.FindFirst("display_name")?.Value ?? user.Identity?.Name ?? "Operator";
+        UserName = user.Identity?.Name ?? string.Empty;
+        Email = user.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
+        Roles = user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
+    }
+}

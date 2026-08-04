@@ -1,6 +1,13 @@
+using System.Text;
+using Game.Backend.Auth;
 using Game.Backend.Data;
+using Game.Backend.Entities;
 using Game.Backend.Hubs;
 using Game.Shared.Dtos;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +20,58 @@ builder.Services.AddSignalR();
 // Aspire Npgsql/EF Core integration: resolves the "gamedb" connection string
 // from the AppHost-provided PostgreSQL resource (see Game.AppHost/AppHost.cs).
 builder.AddNpgsqlDbContext<GameDbContext>(connectionName: "gamedb");
+
+// JWT signing options; ValidateOnStart fails the app fast at boot if Jwt:Key/Issuer/Audience
+// are missing, too short, or (outside Development) still the local placeholder — see
+// JwtOptionsValidation.
+builder.Services.AddSingleton<IValidateOptions<JwtOptions>, JwtOptionsValidation>();
+builder.Services.AddOptions<JwtOptions>()
+    .Bind(builder.Configuration.GetSection(JwtOptions.SectionName))
+    .ValidateOnStart();
+builder.Services.AddSingleton<JwtTokenService>();
+
+builder.Services
+    .AddIdentityCore<UserEntity>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+
+        if (builder.Environment.IsDevelopment())
+        {
+            // Relaxed only in Development so the seeded admin/admin, player/player and
+            // gamemaster/gamemaster credentials (see DevelopmentDataSeeder) work verbatim for
+            // testing authorization levels locally. Never relaxed outside Development.
+            options.Password.RequireDigit = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequiredLength = 5;
+            options.Password.RequiredUniqueChars = 1;
+        }
+    })
+    .AddRoles<IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<GameDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var jwt = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()
+                  ?? throw new InvalidOperationException("Jwt configuration section is missing.");
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwt.Issuer,
+            ValidateAudience = true,
+            ValidAudience = jwt.Audience,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(30),
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 if (builder.Environment.IsDevelopment())
 {
@@ -30,7 +89,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapHub<GameHub>("/hubs/game");
+
+app.MapAuthEndpoints();
 
 // REST: client-initiated, state-heavy actions (see docs/01-architecture/networking-strategy.md).
 app.MapGet("/api/game-state", (GameDbContext db) =>
@@ -41,7 +105,8 @@ app.MapGet("/api/game-state", (GameDbContext db) =>
 
     return Results.Ok(new GameStateSnapshotDto(nodes, players, trains));
 })
-.WithName("GetGameState");
+.WithName("GetGameState")
+.RequireAuthorization();
 
 app.Run();
 

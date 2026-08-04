@@ -82,6 +82,21 @@
     color: var(--vk-text-strong);
 }
 
+/* The logout control has to be a <form>/<button> (not a link) so it can POST with an
+   antiforgery token — reset button chrome so it matches the NavLink items around it. */
+.nav-group form {
+    margin: 0;
+}
+
+.nav-item--button {
+    background: none;
+    border-left: 2px solid transparent;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    width: 100%;
+}
+
 @media (min-width: 768px) {
     .nav-toggler {
         display: none;
