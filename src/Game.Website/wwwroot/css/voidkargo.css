@@ -1,0 +1,379 @@
+/*
+ * voidkargo primitives — the identity layer.
+ * ---------------------------------------------------------------------------------------------
+ * Everything Bootstrap doesn't give us: base element styling, the type ramp, and the small set
+ * of HUD primitives (.vk-panel, .vk-label, .vk-stat, .vk-status, corner brackets) that the whole
+ * product — website and in-game UI alike — is assembled from.
+ *
+ * Design intent, in one line: instrumentation, not decoration. Depth comes from hairlines and
+ * value steps; the ember accent is a signal you spend sparingly; motion is short and functional.
+ *
+ * Docs: docs/05-design/design-language.md
+ */
+
+/* =============================================================================== base ==== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background-color: var(--vk-bg);
+    color: var(--vk-text);
+    font-family: var(--vk-font-ui);
+    font-size: var(--vk-fs-300);
+    line-height: var(--vk-lh-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* The starfield substitute: a survey grid, barely there. It gives the void a sense of
+       scale and makes the UI feel measured rather than floating in nothing. */
+    background-image:
+        linear-gradient(to right, var(--vk-grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--vk-grid-line) 1px, transparent 1px);
+    background-size: var(--vk-grid-size) var(--vk-grid-size);
+    background-attachment: fixed;
+}
+
+::selection {
+    background-color: rgba(var(--vk-ember-500-rgb), 0.28);
+    color: var(--vk-text-strong);
+}
+
+/* One focus treatment, everywhere. Never remove it — it is part of the look, not a defect. */
+:focus-visible {
+    outline: none;
+    box-shadow: var(--vk-focus-ring);
+    border-radius: var(--vk-radius-sharp);
+}
+
+/* Thin, recessed scrollbars — the chrome should never out-shout the data. */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--vk-steel-300) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--vk-steel-300);
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--vk-steel-200);
+}
+
+/* ========================================================================= typography ==== */
+
+h1, h2, h3, h4, h5, h6,
+.vk-display {
+    color: var(--vk-text-strong);
+    font-family: var(--vk-font-display);
+    font-weight: var(--vk-fw-semibold);
+    letter-spacing: var(--vk-tracking-display);
+    line-height: var(--vk-lh-tight);
+    margin-block: 0 var(--vk-space-4);
+    text-wrap: balance;
+}
+
+h1 { font-size: var(--vk-fs-800); }
+h2 { font-size: var(--vk-fs-700); }
+h3 { font-size: var(--vk-fs-600); }
+h4 { font-size: var(--vk-fs-500); }
+h5 { font-size: var(--vk-fs-400); }
+h6 { font-size: var(--vk-fs-300); }
+
+p {
+    margin-block: 0 var(--vk-space-4);
+    max-width: 68ch; /* Long measures are unreadable; cap them at the source. */
+}
+
+a {
+    color: var(--vk-accent);
+    text-decoration-color: rgba(var(--vk-ember-500-rgb), 0.35);
+    text-underline-offset: 0.2em;
+    transition: color var(--vk-duration-fast) var(--vk-ease-out);
+}
+
+a:hover {
+    color: var(--vk-accent-hover);
+}
+
+code, kbd, samp, pre {
+    font-family: var(--vk-font-mono);
+    font-size: 0.925em;
+}
+
+/*
+ * The eyebrow label. Small, uppercase, widely tracked — this single texture does more to make
+ * a UI read as "technical instrument" than any amount of glow. Use above panels, stats and
+ * section starts. Never in body copy.
+ */
+.vk-label {
+    color: var(--vk-text-muted);
+    display: inline-block;
+    font-family: var(--vk-font-ui);
+    font-size: var(--vk-fs-200);
+    font-weight: var(--vk-fw-medium);
+    letter-spacing: var(--vk-tracking-label);
+    line-height: var(--vk-lh-snug);
+    text-transform: uppercase;
+}
+
+.vk-label--accent { color: var(--vk-accent); }
+.vk-label--dim { color: var(--vk-text-dim); }
+
+/* Every number, ID, coordinate and timer. Tabular figures stop values jittering as they tick. */
+.vk-mono,
+.vk-numeric {
+    font-family: var(--vk-font-mono);
+    font-feature-settings: 'tnum' 1, 'zero' 1;
+    font-variant-numeric: tabular-nums slashed-zero;
+}
+
+.vk-text-muted { color: var(--vk-text-muted); }
+.vk-text-dim { color: var(--vk-text-dim); }
+.vk-text-strong { color: var(--vk-text-strong); }
+
+/* The wordmark. "void" recedes, "kargo" carries the ember — the cargo is the point. */
+.vk-brand {
+    align-items: baseline;
+    color: var(--vk-text-strong);
+    display: inline-flex;
+    font-family: var(--vk-font-display);
+    font-size: var(--vk-fs-400);
+    font-weight: var(--vk-fw-bold);
+    gap: 0.1em;
+    letter-spacing: var(--vk-tracking-display);
+    line-height: 1;
+    text-decoration: none;
+    text-transform: lowercase;
+}
+
+.vk-brand:hover { color: var(--vk-text-strong); }
+.vk-brand__void { color: var(--vk-text-dim); font-weight: var(--vk-fw-regular); }
+.vk-brand__kargo { color: var(--vk-text-strong); }
+.vk-brand__mark { color: var(--vk-accent); }
+
+/* ========================================================================= primitives ==== */
+
+/*
+ * Panel — the universal container. A hairline box on the void with a slightly lifted fill.
+ * `--elevated` for floating layers, `--inset` for wells (logs, code, embedded data).
+ */
+.vk-panel {
+    background-color: var(--vk-surface);
+    border: var(--vk-hairline);
+    border-radius: var(--vk-radius-sharp);
+    box-shadow: var(--vk-shadow-seam);
+    position: relative;
+}
+
+.vk-panel--elevated {
+    background-color: var(--vk-surface-raised);
+    border-color: var(--vk-border-strong);
+    box-shadow: var(--vk-shadow-seam), var(--vk-shadow-lift);
+}
+
+.vk-panel--inset {
+    background-color: var(--vk-surface-inset);
+    box-shadow: none;
+}
+
+.vk-panel__header {
+    align-items: center;
+    border-bottom: var(--vk-hairline);
+    display: flex;
+    gap: var(--vk-space-3);
+    justify-content: space-between;
+    padding: var(--vk-space-3) var(--vk-space-4);
+}
+
+.vk-panel__body {
+    padding: var(--vk-space-4);
+}
+
+.vk-panel__footer {
+    border-top: var(--vk-hairline);
+    padding: var(--vk-space-3) var(--vk-space-4);
+}
+
+/*
+ * Corner brackets. Four cut corners drawn with borders — the single most recognisable HUD
+ * device, and free of images. Apply to a .vk-panel to promote it to "primary readout".
+ * Reserve it: if everything is bracketed, nothing is.
+ */
+.vk-hud {
+    position: relative;
+}
+
+.vk-hud::before,
+.vk-hud::after {
+    border: var(--vk-border-width) solid var(--vk-accent);
+    content: '';
+    height: 10px;
+    pointer-events: none;
+    position: absolute;
+    width: 10px;
+}
+
+.vk-hud::before {
+    border-right: none;
+    border-bottom: none;
+    left: -1px;
+    top: -1px;
+}
+
+.vk-hud::after {
+    border-left: none;
+    border-top: none;
+    bottom: -1px;
+    right: -1px;
+}
+
+/*
+ * Divider. Plain rule by default; `--stitch` adds the Slavic thread — a rhombus/cross-stitch
+ * band lifted from rushnyk embroidery, reduced to a hairline. Section breaks only.
+ */
+.vk-divider {
+    background-color: var(--vk-border);
+    border: 0;
+    height: 1px;
+    margin-block: var(--vk-space-5);
+    width: 100%;
+}
+
+.vk-divider--stitch {
+    background-color: transparent;
+    background-image:
+        linear-gradient(45deg, var(--vk-rhombus-line) 25%, transparent 25%, transparent 75%, var(--vk-rhombus-line) 75%),
+        linear-gradient(45deg, var(--vk-rhombus-line) 25%, transparent 25%, transparent 75%, var(--vk-rhombus-line) 75%);
+    background-position: 0 0, calc(var(--vk-rhombus-size) / 2) calc(var(--vk-rhombus-size) / 2);
+    background-size: var(--vk-rhombus-size) var(--vk-rhombus-size);
+    height: var(--vk-rhombus-size);
+    opacity: 0.9;
+}
+
+/* Stat — a labelled readout. The atom of every dashboard, panel and in-game HUD block. */
+.vk-stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vk-space-1);
+}
+
+.vk-stat__label {
+    color: var(--vk-text-muted);
+    font-size: var(--vk-fs-200);
+    font-weight: var(--vk-fw-medium);
+    letter-spacing: var(--vk-tracking-label);
+    text-transform: uppercase;
+}
+
+.vk-stat__value {
+    color: var(--vk-text-strong);
+    font-family: var(--vk-font-mono);
+    font-size: var(--vk-fs-600);
+    font-variant-numeric: tabular-nums slashed-zero;
+    line-height: var(--vk-lh-tight);
+}
+
+.vk-stat__unit {
+    color: var(--vk-text-dim);
+    font-size: var(--vk-fs-300);
+    margin-left: 0.25em;
+}
+
+.vk-stat--accent .vk-stat__value { color: var(--vk-accent); }
+
+/* Status dot. Colour alone never carries meaning — always pair it with its text label. */
+.vk-status {
+    align-items: center;
+    display: inline-flex;
+    font-size: var(--vk-fs-200);
+    gap: var(--vk-space-2);
+    letter-spacing: var(--vk-tracking-label);
+    text-transform: uppercase;
+}
+
+.vk-status::before {
+    background-color: currentColor;
+    border-radius: 50%;
+    content: '';
+    height: 6px;
+    width: 6px;
+}
+
+.vk-status--online { color: var(--vk-success); }
+.vk-status--info { color: var(--vk-info); }
+.vk-status--warning { color: var(--vk-warning); }
+.vk-status--danger { color: var(--vk-danger); }
+.vk-status--offline { color: var(--vk-text-dim); }
+
+/* Live values pulse; nothing else does. This is the only ambient animation in the system. */
+.vk-status--live {
+    color: var(--vk-accent);
+}
+
+.vk-status--live::before {
+    animation: vk-pulse 2s var(--vk-ease-standard) infinite;
+    box-shadow: var(--vk-glow-accent);
+}
+
+@keyframes vk-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+/* Section heading with an eyebrow above it — the standard page/section opener. */
+.vk-section-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vk-space-2);
+    margin-bottom: var(--vk-space-5);
+}
+
+.vk-section-head > h1,
+.vk-section-head > h2,
+.vk-section-head > h3 {
+    margin-bottom: 0;
+}
+
+/* ============================================================================= layout ==== */
+
+.vk-container {
+    margin-inline: auto;
+    max-width: var(--vk-content-max);
+    padding-inline: var(--vk-space-5);
+    width: 100%;
+}
+
+.vk-stack > * + * { margin-top: var(--vk-space-4); }
+.vk-stack--tight > * + * { margin-top: var(--vk-space-2); }
+.vk-stack--loose > * + * { margin-top: var(--vk-space-6); }
+
+/* ====================================================================== accessibility ==== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

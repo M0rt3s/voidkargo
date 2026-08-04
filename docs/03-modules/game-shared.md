@@ -9,6 +9,11 @@ A plain C# class library referenced **verbatim** by both `Game.Backend` and the 
 - Game math (economy formulas, movement/timing calculations).
 - Grid/map logic shared between server simulation and client rendering.
 - Validation rules that both server (authoritative) and client (optimistic UI) need to agree on.
+- `Design/` — canonical UI design tokens (colour, typography, spacing/motion metrics). The
+  single source of truth for the "Void & Ember" visual identity, mirrored by the website's
+  `wwwroot/css/tokens.css` and consumed directly by Unity once its UI is built. See
+  [ADR 0004](../02-decisions/0004-design-language-and-ui-foundation.md) and
+  [docs/05-design](../05-design/design-language.md).
 
 ## Rules
 

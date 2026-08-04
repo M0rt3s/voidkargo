@@ -21,6 +21,7 @@ exactly where to look and what they need, without wading through a huge unmainta
   - [0001 — Use .NET Aspire for orchestration](02-decisions/0001-use-net-aspire-for-orchestration.md)
   - [0002 — Unity as the client engine](02-decisions/0002-unity-as-client-engine.md)
   - [0003 — SignalR + REST hybrid networking](02-decisions/0003-signalr-plus-rest-hybrid-networking.md)
+  - [0004 — Design language and UI foundation](02-decisions/0004-design-language-and-ui-foundation.md)
 - **[03-modules](03-modules/game-backend.md)** — one short doc per project.
   - [Game.Backend](03-modules/game-backend.md)
   - [Game.Shared](03-modules/game-shared.md)
@@ -31,6 +32,11 @@ exactly where to look and what they need, without wading through a huge unmainta
   - [AI workflow](04-workflows/ai-workflow.md)
   - [Local dev setup](04-workflows/local-dev-setup.md)
   - [Definition of done](04-workflows/definition-of-done.md)
+- **[05-design](05-design/design-language.md)** — the "Void & Ember" visual identity, shared by
+  the website and (eventually) the game client.
+  - [Design language](05-design/design-language.md)
+  - [Design tokens reference](05-design/design-tokens.md)
+  - [Component inventory](05-design/component-inventory.md)
 
 ## Conventions for this vault
 

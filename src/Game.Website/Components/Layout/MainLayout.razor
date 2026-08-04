@@ -1,19 +1,31 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
+<div class="shell">
+    <aside class="shell__sidebar">
         <NavMenu />
+    </aside>
+
+    <div class="shell__main">
+        <header class="shell__topbar">
+            <div class="shell__topbar-meta">
+                <span class="vk-status vk-status--online">Network nominal</span>
+                <span class="vk-label vk-label--dim d-none d-md-inline">Sector 07 · Cycle 001</span>
+            </div>
+
+            <div class="shell__topbar-actions">
+                <button class="btn btn-sm btn-primary" type="button" disabled
+                        title="The Unity client is not wired up yet">
+                    Launch client
+                </button>
+            </div>
+        </header>
+
+        <main class="shell__content">
+            <div class="vk-container">
+                @Body
+            </div>
+        </main>
     </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
 </div>
 
 <div id="blazor-error-ui" data-nosnippet>

@@ -1,12 +1,28 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#06080A" />
     <base href="/" />
     <ResourcePreloader />
+    @*
+        Stylesheet order is load-bearing:
+          1. fonts      - @font-face declarations for the self-hosted webfonts.
+          2. tokens     - the voidkargo design tokens (--vk-*). Nothing may precede these.
+          3. bootstrap  - kept as the layout/behaviour engine only.
+          4. bridge     - re-points Bootstrap's --bs-* variables at our tokens; must follow it.
+          5. voidkargo  - base elements and the .vk-* primitives.
+          6. app.css    - app-level odds and ends.
+        See docs/05-design/design-tokens.md.
+    *@
+    <link rel="stylesheet" href="@Assets["css/fonts.css"]" />
+    <link rel="stylesheet" href="@Assets["css/tokens.css"]" />
     <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
+    <link rel="stylesheet" href="@Assets["css/bootstrap-bridge.css"]" />
+    <link rel="stylesheet" href="@Assets["css/voidkargo.css"]" />
     <link rel="stylesheet" href="@Assets["app.css"]" />
     <link rel="stylesheet" href="@Assets["Game.Website.styles.css"]" />
     <ImportMap />

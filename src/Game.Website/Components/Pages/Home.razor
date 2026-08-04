@@ -1,7 +1,112 @@
-﻿@page "/"
+@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>voidkargo</PageTitle>
 
-<h1>Hello, world!</h1>
+@*
+    Reference implementation of the "Void & Ember" design language. Everything here is built
+    from tokens and the .vk-* primitives in wwwroot/css/voidkargo.css — nothing is bespoke.
+    Use this page as the pattern for new pages; see docs/05-design/design-language.md.
+*@
 
-Welcome to your new app.
+<section class="hero">
+    <div class="hero__copy vk-stack">
+        <span class="vk-label vk-label--accent">Logistics command · Open beta</span>
+
+        <h1 class="hero__title">
+            Move the <span class="hero__title-accent">cargo</span>.<br />
+            Own the network.
+        </h1>
+
+        <p class="hero__lede">
+            A management strategy game about routes, timing and margins. Build the lines,
+            read the market, and outlast every other operator in the sector.
+        </p>
+
+        <div class="hero__actions">
+            <button class="btn btn-primary" type="button" disabled
+                    title="The Unity client is not wired up yet">
+                Launch client
+            </button>
+            <a class="btn btn-secondary" href="counter">Explore the systems</a>
+        </div>
+    </div>
+
+    <div class="vk-panel vk-hud hero__readout">
+        <div class="vk-panel__header">
+            <span class="vk-label">Sector telemetry</span>
+            <span class="vk-status vk-status--live">Live</span>
+        </div>
+
+        <div class="vk-panel__body hero__readout-grid">
+            <div class="vk-stat">
+                <span class="vk-stat__label">Operators</span>
+                <span class="vk-stat__value">1 284</span>
+            </div>
+            <div class="vk-stat vk-stat--accent">
+                <span class="vk-stat__label">Active routes</span>
+                <span class="vk-stat__value">9 617</span>
+            </div>
+            <div class="vk-stat">
+                <span class="vk-stat__label">Tonnage / cycle</span>
+                <span class="vk-stat__value">42.8<span class="vk-stat__unit">kt</span></span>
+            </div>
+            <div class="vk-stat">
+                <span class="vk-stat__label">Server tick</span>
+                <span class="vk-stat__value">250<span class="vk-stat__unit">ms</span></span>
+            </div>
+        </div>
+
+        <div class="vk-panel__footer">
+            <span class="vk-label vk-label--dim">Next economy cycle in</span>
+            <span class="vk-mono vk-text-strong">00:14:32</span>
+        </div>
+    </div>
+</section>
+
+<hr class="vk-divider vk-divider--stitch" />
+
+<section>
+    <div class="vk-section-head">
+        <span class="vk-label vk-label--dim">Core loop</span>
+        <h2>Three systems, endlessly deep</h2>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-md-4">
+            <article class="vk-panel h-100">
+                <div class="vk-panel__body vk-stack">
+                    <span class="vk-label vk-label--accent">01</span>
+                    <h3 class="h5">Network</h3>
+                    <p class="vk-text-muted mb-0">
+                        Lay track, claim junctions and shape the map before your rivals do.
+                        Geography is a finite resource.
+                    </p>
+                </div>
+            </article>
+        </div>
+        <div class="col-12 col-md-4">
+            <article class="vk-panel h-100">
+                <div class="vk-panel__body vk-stack">
+                    <span class="vk-label vk-label--accent">02</span>
+                    <h3 class="h5">Economy</h3>
+                    <p class="vk-text-muted mb-0">
+                        Prices move with real demand from real players. Read the market, or
+                        be the one who fills someone else's contract.
+                    </p>
+                </div>
+            </article>
+        </div>
+        <div class="col-12 col-md-4">
+            <article class="vk-panel h-100">
+                <div class="vk-panel__body vk-stack">
+                    <span class="vk-label vk-label--accent">03</span>
+                    <h3 class="h5">Fleet</h3>
+                    <p class="vk-text-muted mb-0">
+                        Upgrade, schedule and maintain. Every locomotive is a bet on a
+                        route that has to keep paying.
+                    </p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>

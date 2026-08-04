@@ -1,0 +1,235 @@
+/*
+ * Bootstrap bridge.
+ * ---------------------------------------------------------------------------------------------
+ * Bootstrap 5.3 is kept as the LAYOUT AND BEHAVIOUR engine only: grid, breakpoints, focus and
+ * ARIA states, dropdowns/modals/offcanvas. Its *appearance* is re-pointed at voidkargo tokens
+ * here, so we never fork or override Bootstrap component rules directly.
+ *
+ * Two things worth knowing if you touch this file:
+ *   1. <html data-bs-theme="dark"> is set in App.razor. That switches Bootstrap's own internals
+ *      to their dark variants; this file then replaces the palette on top.
+ *   2. Bootstrap buttons resolve their colours from per-variant --bs-btn-* variables that are
+ *      baked in at Sass compile time — they do NOT read --bs-primary. That's why the button
+ *      variants below are re-declared explicitly.
+ *
+ * Docs: docs/05-design/design-tokens.md
+ */
+
+:root,
+[data-bs-theme="dark"] {
+    /* ---------------------------------------------------------------- surfaces/type ---- */
+    --bs-body-bg: var(--vk-bg);
+    --bs-body-bg-rgb: var(--vk-void-900-rgb);
+    --bs-body-color: var(--vk-text);
+    --bs-emphasis-color: var(--vk-text-strong);
+    --bs-secondary-color: var(--vk-text-muted);
+    --bs-tertiary-color: var(--vk-text-dim);
+    --bs-secondary-bg: var(--vk-surface);
+    --bs-tertiary-bg: var(--vk-surface-raised);
+    --bs-heading-color: var(--vk-text-strong);
+
+    --bs-body-font-family: var(--vk-font-ui);
+    --bs-body-font-size: var(--vk-fs-300);
+    --bs-body-font-weight: var(--vk-fw-regular);
+    --bs-body-line-height: var(--vk-lh-normal);
+    --bs-font-monospace: var(--vk-font-mono);
+
+    /* --------------------------------------------------------------- lines and shape ---- */
+    --bs-border-color: var(--vk-border);
+    --bs-border-color-translucent: var(--vk-border);
+    --bs-border-width: var(--vk-border-width);
+    --bs-border-radius: var(--vk-radius-sharp);
+    --bs-border-radius-sm: var(--vk-radius-none);
+    --bs-border-radius-lg: var(--vk-radius-sharp);
+    --bs-border-radius-xl: var(--vk-radius-soft);
+    --bs-border-radius-2xl: var(--vk-radius-soft);
+    --bs-border-radius-pill: 999px;
+
+    /* ------------------------------------------------------------------- theme colour ---- */
+    --bs-primary: var(--vk-accent);
+    --bs-primary-rgb: var(--vk-ember-500-rgb);
+    --bs-primary-text-emphasis: var(--vk-ember-300);
+    --bs-primary-bg-subtle: rgba(var(--vk-ember-500-rgb), 0.08);
+    --bs-primary-border-subtle: rgba(var(--vk-ember-500-rgb), 0.35);
+
+    --bs-info: var(--vk-info);
+    --bs-info-rgb: var(--vk-frost-500-rgb);
+    --bs-success: var(--vk-success);
+    --bs-warning: var(--vk-warning);
+    --bs-danger: var(--vk-danger);
+    --bs-danger-rgb: var(--vk-rushnyk-500-rgb);
+
+    --bs-link-color: var(--vk-accent);
+    --bs-link-color-rgb: var(--vk-ember-500-rgb);
+    --bs-link-hover-color: var(--vk-accent-hover);
+    --bs-link-hover-color-rgb: var(--vk-ember-500-rgb);
+    --bs-code-color: var(--vk-info);
+
+    /* ------------------------------------------------------------------------- focus ---- */
+    --bs-focus-ring-width: 2px;
+    --bs-focus-ring-opacity: 0.55;
+    --bs-focus-ring-color: rgba(var(--vk-ember-500-rgb), 0.55);
+}
+
+/* -------------------------------------------------------------------------- buttons ---- */
+/* Solid ember. The one loud element on a screen — use at most one per view. */
+.btn-primary {
+    --bs-btn-color: var(--vk-void-900);
+    --bs-btn-bg: var(--vk-accent);
+    --bs-btn-border-color: var(--vk-accent);
+    --bs-btn-hover-color: var(--vk-void-900);
+    --bs-btn-hover-bg: var(--vk-accent-hover);
+    --bs-btn-hover-border-color: var(--vk-accent-hover);
+    --bs-btn-active-color: var(--vk-void-900);
+    --bs-btn-active-bg: var(--vk-accent-pressed);
+    --bs-btn-active-border-color: var(--vk-accent-pressed);
+    --bs-btn-disabled-color: var(--vk-text-dim);
+    --bs-btn-disabled-bg: var(--vk-surface-raised);
+    --bs-btn-disabled-border-color: var(--vk-border);
+    --bs-btn-font-weight: var(--vk-fw-semibold);
+}
+
+/* The default action. Hairline box on the void — this is the workhorse, not the primary. */
+.btn-secondary,
+.btn-outline-secondary {
+    --bs-btn-color: var(--vk-text);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: var(--vk-border-strong);
+    --bs-btn-hover-color: var(--vk-text-strong);
+    --bs-btn-hover-bg: var(--vk-surface-raised);
+    --bs-btn-hover-border-color: var(--vk-steel-200);
+    --bs-btn-active-color: var(--vk-text-strong);
+    --bs-btn-active-bg: var(--vk-surface-inset);
+    --bs-btn-active-border-color: var(--vk-steel-200);
+    --bs-btn-disabled-color: var(--vk-text-dim);
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: var(--vk-border);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--vk-accent);
+    --bs-btn-border-color: rgba(var(--vk-ember-500-rgb), 0.5);
+    --bs-btn-hover-color: var(--vk-void-900);
+    --bs-btn-hover-bg: var(--vk-accent);
+    --bs-btn-hover-border-color: var(--vk-accent);
+    --bs-btn-active-color: var(--vk-void-900);
+    --bs-btn-active-bg: var(--vk-accent-pressed);
+    --bs-btn-active-border-color: var(--vk-accent-pressed);
+    --bs-btn-disabled-color: var(--vk-text-dim);
+    --bs-btn-disabled-border-color: var(--vk-border);
+}
+
+.btn-danger {
+    --bs-btn-color: var(--vk-bone-000);
+    --bs-btn-bg: var(--vk-danger);
+    --bs-btn-border-color: var(--vk-danger);
+    --bs-btn-hover-bg: #D9463B;
+    --bs-btn-hover-border-color: #D9463B;
+    --bs-btn-active-bg: #A82A21;
+    --bs-btn-active-border-color: #A82A21;
+}
+
+.btn {
+    --bs-btn-padding-x: var(--vk-space-4);
+    --bs-btn-padding-y: var(--vk-space-2);
+    --bs-btn-font-size: var(--vk-fs-300);
+    --bs-btn-border-radius: var(--vk-radius-sharp);
+    --bs-btn-focus-box-shadow: var(--vk-focus-ring);
+    transition: background-color var(--vk-duration-fast) var(--vk-ease-out),
+                border-color var(--vk-duration-fast) var(--vk-ease-out),
+                color var(--vk-duration-fast) var(--vk-ease-out);
+}
+
+/* --------------------------------------------------------------------------- forms ---- */
+.form-control,
+.form-select {
+    background-color: var(--vk-surface-inset);
+    border-color: var(--vk-border-strong);
+    color: var(--vk-text);
+    border-radius: var(--vk-radius-sharp);
+    font-size: var(--vk-fs-300);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--vk-surface-inset);
+    border-color: var(--vk-accent);
+    color: var(--vk-text-strong);
+    box-shadow: var(--vk-focus-ring);
+}
+
+.form-control::placeholder {
+    color: var(--vk-text-dim);
+}
+
+/* Labels are the HUD's connective tissue: small, uppercase, widely tracked. */
+.form-label,
+.col-form-label {
+    color: var(--vk-text-muted);
+    font-size: var(--vk-fs-200);
+    font-weight: var(--vk-fw-medium);
+    letter-spacing: var(--vk-tracking-label);
+    text-transform: uppercase;
+}
+
+.form-check-input {
+    background-color: var(--vk-surface-inset);
+    border-color: var(--vk-border-strong);
+    border-radius: var(--vk-radius-sharp);
+}
+
+.form-check-input:checked {
+    background-color: var(--vk-accent);
+    border-color: var(--vk-accent);
+}
+
+/* -------------------------------------------------------------- cards, tables, misc ---- */
+.card {
+    --bs-card-bg: var(--vk-surface);
+    --bs-card-border-color: var(--vk-border);
+    --bs-card-border-radius: var(--vk-radius-sharp);
+    --bs-card-inner-border-radius: var(--vk-radius-sharp);
+    --bs-card-cap-bg: var(--vk-surface-inset);
+    --bs-card-spacer-x: var(--vk-space-5);
+    --bs-card-spacer-y: var(--vk-space-4);
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--vk-text);
+    --bs-table-border-color: var(--vk-border);
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.015);
+    --bs-table-hover-bg: var(--vk-surface-raised);
+    font-variant-numeric: tabular-nums;
+}
+
+.table > thead th {
+    color: var(--vk-text-muted);
+    font-size: var(--vk-fs-200);
+    font-weight: var(--vk-fw-medium);
+    letter-spacing: var(--vk-tracking-label);
+    text-transform: uppercase;
+}
+
+.modal,
+.offcanvas,
+.dropdown-menu {
+    --bs-modal-bg: var(--vk-surface);
+    --bs-modal-border-color: var(--vk-border-strong);
+    --bs-modal-border-radius: var(--vk-radius-sharp);
+    --bs-offcanvas-bg: var(--vk-surface);
+    --bs-offcanvas-border-color: var(--vk-border);
+    --bs-dropdown-bg: var(--vk-surface-raised);
+    --bs-dropdown-border-color: var(--vk-border-strong);
+    --bs-dropdown-border-radius: var(--vk-radius-sharp);
+    --bs-dropdown-link-hover-bg: var(--vk-surface-inset);
+    --bs-dropdown-link-active-bg: rgba(var(--vk-ember-500-rgb), 0.14);
+    --bs-dropdown-link-active-color: var(--vk-ember-300);
+}
+
+.badge {
+    --bs-badge-border-radius: var(--vk-radius-sharp);
+    --bs-badge-font-weight: var(--vk-fw-medium);
+    letter-spacing: var(--vk-tracking-label);
+    text-transform: uppercase;
+}

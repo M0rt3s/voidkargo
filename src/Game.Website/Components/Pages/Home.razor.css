@@ -1,0 +1,54 @@
+/* Landing hero. Two-column above `lg`, stacked below. */
+
+.hero {
+    align-items: center;
+    display: grid;
+    gap: var(--vk-space-7);
+    grid-template-columns: 1fr;
+    padding-block: var(--vk-space-6) var(--vk-space-7);
+}
+
+.hero__title {
+    font-size: var(--vk-fs-800);
+    margin-bottom: 0;
+}
+
+.hero__title-accent {
+    color: var(--vk-accent);
+}
+
+.hero__lede {
+    color: var(--vk-text-muted);
+    font-size: var(--vk-fs-400);
+    max-width: 52ch;
+}
+
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vk-space-3);
+    margin-top: var(--vk-space-2);
+}
+
+.hero__readout-grid {
+    display: grid;
+    gap: var(--vk-space-5);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hero__readout .vk-panel__footer {
+    align-items: baseline;
+    display: flex;
+    gap: var(--vk-space-3);
+    justify-content: space-between;
+}
+
+@media (min-width: 992px) {
+    .hero {
+        grid-template-columns: 1.15fr 1fr;
+    }
+
+    .hero__title {
+        font-size: var(--vk-fs-900);
+    }
+}

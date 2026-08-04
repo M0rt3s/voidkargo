@@ -1,0 +1,153 @@
+/*
+ * voidkargo design tokens — "Void & Ember".
+ * ---------------------------------------------------------------------------------------------
+ * THE single source of truth for the web. Values here are mirrored verbatim by
+ * src/Game.Shared/Design/*.cs so the Unity client can render the same UI language. If you change
+ * a value here, change it there in the same commit.
+ *
+ * Rules of use:
+ *   - Components consume SEMANTIC tokens (--vk-surface, --vk-text, --vk-accent...).
+ *   - Raw ramp values (--vk-void-700, --vk-ember-500...) are only referenced when defining a
+ *     new semantic token, never directly in a component.
+ *   - Nothing in the UI hardcodes a colour, a radius, a duration or a spacing value.
+ *
+ * Docs: docs/05-design/design-tokens.md
+ */
+
+:root {
+    /* ---------------------------------------------------------------- colour ramps ---- */
+
+    /* Void — backgrounds. Never pure black; the void has depth, not absence. */
+    --vk-void-900: #06080A;
+    --vk-void-800: #0A0D11;
+    --vk-void-700: #0F141A;
+    --vk-void-600: #151B23;
+    --vk-void-500: #1D242D;
+
+    /* Steel — hairlines, dividers, de-emphasised type. */
+    --vk-steel-400: #232C36;
+    --vk-steel-300: #33404E;
+    --vk-steel-200: #6C7A8A;
+    --vk-steel-100: #9BA8B6;
+
+    /* Bone — type. Off-white; pure #FFF glares on a dark field. */
+    --vk-bone-100: #DDE3E9;
+    --vk-bone-000: #F2F5F7;
+
+    /* Ember — the one accent. Instrument backlight / cargo-hazard ochre. */
+    --vk-ember-600: #8A4F0C;
+    --vk-ember-500: #E08A1E;
+    --vk-ember-400: #F0A73C;
+    --vk-ember-300: #FFC66B;
+
+    /* Signals — carry meaning only, never decoration. */
+    --vk-frost-500: #58A6C9;
+    --vk-moss-500: #3F8F63;
+    --vk-sulfur-500: #C9A227;
+    --vk-rushnyk-500: #C8352A;
+
+    /* RGB triplets, for colour-mixing in rgba() where a solid token won't do. */
+    --vk-ember-500-rgb: 224, 138, 30;
+    --vk-frost-500-rgb: 88, 166, 201;
+    --vk-rushnyk-500-rgb: 200, 53, 42;
+    --vk-void-900-rgb: 6, 8, 10;
+
+    /* ------------------------------------------------------------ semantic colour ---- */
+    --vk-bg: var(--vk-void-900);
+    --vk-surface: var(--vk-void-700);
+    --vk-surface-raised: var(--vk-void-600);
+    --vk-surface-inset: var(--vk-void-800);
+    --vk-border: var(--vk-steel-400);
+    --vk-border-strong: var(--vk-steel-300);
+    --vk-text: var(--vk-bone-100);
+    --vk-text-strong: var(--vk-bone-000);
+    --vk-text-muted: var(--vk-steel-100);
+    --vk-text-dim: var(--vk-steel-200);
+    --vk-accent: var(--vk-ember-500);
+    --vk-accent-hover: var(--vk-ember-400);
+    --vk-accent-pressed: var(--vk-ember-600);
+    --vk-focus: var(--vk-ember-300);
+    --vk-info: var(--vk-frost-500);
+    --vk-success: var(--vk-moss-500);
+    --vk-warning: var(--vk-sulfur-500);
+    --vk-danger: var(--vk-rushnyk-500);
+
+    /* ------------------------------------------------------------------ typography ---- */
+    --vk-font-display: 'Unbounded', 'Inter', system-ui, sans-serif;
+    --vk-font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --vk-font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+
+    /* Scale, ratio ~1.25 (major third). 400 is body; below is chrome, above is display. */
+    --vk-fs-100: 0.6875rem;  /* 11 */
+    --vk-fs-200: 0.75rem;    /* 12 */
+    --vk-fs-300: 0.875rem;   /* 14 */
+    --vk-fs-400: 1rem;       /* 16 */
+    --vk-fs-500: 1.25rem;    /* 20 */
+    --vk-fs-600: 1.5625rem;  /* 25 */
+    --vk-fs-700: 1.9375rem;  /* 31 */
+    --vk-fs-800: 2.4375rem;  /* 39 */
+    --vk-fs-900: 3.0625rem;  /* 49 */
+
+    --vk-lh-tight: 1.1;
+    --vk-lh-snug: 1.35;
+    --vk-lh-normal: 1.6;
+
+    --vk-tracking-display: -0.02em;
+    --vk-tracking-normal: 0;
+    --vk-tracking-label: 0.14em;
+
+    --vk-fw-regular: 400;
+    --vk-fw-medium: 500;
+    --vk-fw-semibold: 600;
+    --vk-fw-bold: 700;
+
+    /* --------------------------------------------------------------------- spacing ---- */
+    /* 4px base grid. Nothing sits off it. */
+    --vk-space-1: 0.25rem;
+    --vk-space-2: 0.5rem;
+    --vk-space-3: 0.75rem;
+    --vk-space-4: 1rem;
+    --vk-space-5: 1.5rem;
+    --vk-space-6: 2rem;
+    --vk-space-7: 3rem;
+    --vk-space-8: 4rem;
+
+    /* ------------------------------------------------------- shape, line, elevation ---- */
+    /* Machined and cut, not soft. 4px is the ceiling and is for pill badges only. */
+    --vk-radius-none: 0;
+    --vk-radius-sharp: 2px;
+    --vk-radius-soft: 4px;
+
+    --vk-border-width: 1px;
+    --vk-hairline: var(--vk-border-width) solid var(--vk-border);
+    --vk-hairline-strong: var(--vk-border-width) solid var(--vk-border-strong);
+
+    /* Depth comes from hairlines and value steps, not from drop shadows. These two are the
+       entire elevation vocabulary: a seam, and a lift for genuinely floating layers. */
+    --vk-shadow-seam: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    --vk-shadow-lift: 0 16px 40px -24px rgba(0, 0, 0, 0.9);
+
+    /* Glow is a state, never a style: focus and live/active only. */
+    --vk-glow-accent: 0 0 16px -4px rgba(var(--vk-ember-500-rgb), 0.45);
+    --vk-focus-ring: 0 0 0 1px var(--vk-bg), 0 0 0 3px rgba(var(--vk-ember-500-rgb), 0.55);
+
+    /* ---------------------------------------------------------------------- motion ---- */
+    --vk-duration-instant: 90ms;
+    --vk-duration-fast: 140ms;
+    --vk-duration-slow: 200ms;
+    --vk-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --vk-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* ---------------------------------------------------------------------- layout ---- */
+    --vk-topbar-height: 3.5rem;   /* 56 */
+    --vk-sidebar-width: 16.25rem; /* 260 */
+    --vk-content-max: 82.5rem;    /* 1320 */
+
+    /* ------------------------------------------------------------------- ornament ----- */
+    /* The Slavic thread: cross-stitch geometry (rhombus / 8-point Alatyr star) reduced to
+       hairlines. Backdrop textures only — never loud, never a focal point. */
+    --vk-grid-line: rgba(155, 168, 182, 0.045);
+    --vk-grid-size: 32px;
+    --vk-rhombus-line: rgba(224, 138, 30, 0.07);
+    --vk-rhombus-size: 24px;
+}
