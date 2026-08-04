@@ -1,0 +1,35 @@
+/*
+ * VkThreadRow — forum thread list item. The whole title is the primary click target; metadata
+ * sits below in a single muted line, matching leaderboard/log row density.
+ */
+
+.vk-thread-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vk-space-2);
+    padding: var(--vk-space-4);
+    transition: border-color var(--vk-duration-fast) var(--vk-ease-out);
+}
+
+.vk-thread-row:hover {
+    border-color: var(--vk-border-strong);
+}
+
+.vk-thread-row__title {
+    color: var(--vk-text-strong);
+    font-family: var(--vk-font-ui);
+    font-size: var(--vk-fs-400);
+    font-weight: var(--vk-fw-semibold);
+    text-decoration: none;
+}
+
+.vk-thread-row__title:hover {
+    color: var(--vk-accent);
+}
+
+.vk-thread-row__meta {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vk-space-4);
+}

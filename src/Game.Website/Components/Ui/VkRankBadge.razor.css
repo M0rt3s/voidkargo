@@ -1,0 +1,18 @@
+/*
+ * VkRankBadge — plain mono numeral. #2/#3 read as muted text; #1 gets the accent + heavier
+ * weight. No badge shape, no colour-coded medals — see component-inventory.md Priority 2.
+ */
+
+.vk-rank-badge {
+    color: var(--vk-text-muted);
+    font-family: var(--vk-font-mono);
+    font-feature-settings: 'tnum' 1;
+    font-size: var(--vk-fs-300);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--vk-fw-medium);
+}
+
+.vk-rank-badge--first {
+    color: var(--vk-accent);
+    font-weight: var(--vk-fw-bold);
+}

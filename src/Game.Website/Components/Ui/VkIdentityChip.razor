@@ -1,0 +1,28 @@
+@*
+    VkIdentityChip — circular avatar + username + optional role/rank tag. The circular avatar is
+    a deliberate exception to the sharp-corner rule (see design-language.md).
+
+    docs/05-design/component-inventory.md — Priority 2.
+*@
+
+<span class="vk-identity-chip">
+    <img class="vk-identity-chip__avatar" src="@AvatarUrl" alt="" width="28" height="28" />
+    <span class="vk-identity-chip__name">@DisplayName</span>
+    @if (!string.IsNullOrWhiteSpace(Tag))
+    {
+        <span class="badge vk-identity-chip__tag">@Tag</span>
+    }
+</span>
+
+@code {
+    /// <summary>URL of the avatar image. Falls back to a neutral placeholder if not set.</summary>
+    [Parameter]
+    public string AvatarUrl { get; set; } = "img/avatar-placeholder.svg";
+
+    [Parameter, EditorRequired]
+    public string DisplayName { get; set; } = string.Empty;
+
+    /// <summary>Optional short role/rank label, e.g. "Mod" or "Founder".</summary>
+    [Parameter]
+    public string? Tag { get; set; }
+}

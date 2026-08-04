@@ -1,0 +1,92 @@
+@page "/dev/styleguide"
+
+<PageTitle>voidkargo · Style guide</PageTitle>
+
+@*
+    Internal-only rendering surface for docs/05-design/component-inventory.md Priority 1/2
+    components. Not linked from NavMenu — visit directly at /dev/styleguide to QA new UI.
+*@
+
+<div class="vk-section-head">
+    <span class="vk-label vk-label--dim">Internal</span>
+    <h1>Component style guide</h1>
+</div>
+
+<section class="vk-stack vk-stack--loose">
+    <div>
+        <h2>VkAlert</h2>
+        <div class="vk-stack">
+            <VkAlert Variant="VkAlertVariant.Info" Title="Heads up">Scheduled maintenance runs 02:00–03:00 UTC.</VkAlert>
+            <VkAlert Variant="VkAlertVariant.Success" Title="Saved">Your route was published.</VkAlert>
+            <VkAlert Variant="VkAlertVariant.Warning" Title="Low balance">You have fewer than 3 locomotives left.</VkAlert>
+            <VkAlert Variant="VkAlertVariant.Danger" Title="Login failed">Check your username and password.</VkAlert>
+        </div>
+    </div>
+
+    <div>
+        <h2>VkEmptyState</h2>
+        <VkEmptyState Eyebrow="No results" Message="No forum posts yet. Be the first operator to start a thread.">
+            <ActionContent>
+                <button class="btn btn-primary" type="button">Start a thread</button>
+            </ActionContent>
+        </VkEmptyState>
+    </div>
+
+    <div>
+        <h2>VkRankBadge + VkIdentityChip</h2>
+        <div class="vk-stack vk-stack--tight">
+            <div class="d-flex align-items-center gap-3">
+                <VkRankBadge Rank="1" />
+                <VkIdentityChip DisplayName="voidcaptain" Tag="Founder" />
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <VkRankBadge Rank="2" />
+                <VkIdentityChip DisplayName="ember.dispatcher" />
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <VkRankBadge Rank="3" />
+                <VkIdentityChip DisplayName="steel.and.rust" />
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h2>Leaderboard table</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Operator</th>
+                    <th class="vk-numeric">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><VkRankBadge Rank="1" /></td>
+                    <td>voidcaptain</td>
+                    <td class="vk-numeric">128 400</td>
+                </tr>
+                <tr>
+                    <td><VkRankBadge Rank="2" /></td>
+                    <td>ember.dispatcher</td>
+                    <td class="vk-numeric">98 120</td>
+                </tr>
+            </tbody>
+        </table>
+        <VkPagination CurrentPage="_page" TotalPages="12" CurrentPageChanged="p => _page = p" />
+    </div>
+
+    <div>
+        <h2>VkThreadRow</h2>
+        <div class="vk-stack vk-stack--tight">
+            <VkThreadRow Title="Best route from Lviv to the coast?" Href="#" Author="ember.dispatcher"
+                         TimestampLabel="2h ago" ReplyCount="14" />
+            <VkThreadRow Title="Server tick feels laggy tonight" Href="#" Author="steel.and.rust"
+                         TimestampLabel="5h ago" ReplyCount="3" />
+        </div>
+    </div>
+</section>
+
+@code {
+    private int _page = 1;
+}

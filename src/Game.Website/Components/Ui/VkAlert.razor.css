@@ -1,0 +1,39 @@
+/*
+ * VkAlert — .vk-panel with a coloured left accent bar instead of a new shadow/radius. Reuses
+ * the panel hairline as the base per docs/05-design/component-inventory.md Priority 1.
+ */
+
+.vk-alert {
+    background-color: var(--vk-surface);
+    border: var(--vk-hairline);
+    border-left-width: 3px;
+    border-radius: var(--vk-radius-sharp);
+    padding: var(--vk-space-3) var(--vk-space-4);
+}
+
+.vk-alert--info { border-left-color: var(--vk-info); }
+.vk-alert--success { border-left-color: var(--vk-success); }
+.vk-alert--warning { border-left-color: var(--vk-warning); }
+.vk-alert--danger { border-left-color: var(--vk-danger); }
+
+.vk-alert__title {
+    color: var(--vk-text-strong);
+    display: block;
+    font-size: var(--vk-fs-300);
+    font-weight: var(--vk-fw-semibold);
+    margin-bottom: var(--vk-space-1);
+}
+
+.vk-alert--info .vk-alert__title { color: var(--vk-info); }
+.vk-alert--success .vk-alert__title { color: var(--vk-success); }
+.vk-alert--warning .vk-alert__title { color: var(--vk-warning); }
+.vk-alert--danger .vk-alert__title { color: var(--vk-danger); }
+
+.vk-alert__body {
+    color: var(--vk-text-muted);
+    font-size: var(--vk-fs-300);
+}
+
+.vk-alert__body:last-child {
+    margin-bottom: 0;
+}

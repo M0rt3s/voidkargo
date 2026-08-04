@@ -1,0 +1,36 @@
+@*
+    VkThreadRow — one row in a forum thread list. A .vk-panel per row; metadata (author,
+    timestamp) is styled as .vk-label vk-label--dim.
+
+    docs/05-design/component-inventory.md — Priority 2.
+*@
+
+<article class="vk-panel vk-thread-row">
+    <a class="vk-thread-row__title" href="@Href">@Title</a>
+    <div class="vk-thread-row__meta">
+        <VkIdentityChip DisplayName="@Author" AvatarUrl="@AvatarUrl" />
+        <span class="vk-label vk-label--dim">@TimestampLabel</span>
+        <span class="vk-label vk-label--dim vk-numeric">@ReplyCount repl@(ReplyCount == 1 ? "y" : "ies")</span>
+    </div>
+</article>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Href { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Author { get; set; } = string.Empty;
+
+    [Parameter]
+    public string AvatarUrl { get; set; } = "img/avatar-placeholder.svg";
+
+    /// <summary>Pre-formatted relative/absolute timestamp, e.g. "2h ago".</summary>
+    [Parameter, EditorRequired]
+    public string TimestampLabel { get; set; } = string.Empty;
+
+    [Parameter]
+    public int ReplyCount { get; set; }
+}

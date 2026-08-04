@@ -13,37 +13,46 @@ CSS classes where one of these already fits.
 
 ## Priority 1 — needed for auth/account pages to exist at all
 
-- **`VkButton`** (optional wrapper, or just document Bootstrap classes directly): confirm
-  `.btn-primary` / `.btn-secondary` / `.btn-outline-primary` / `.btn-danger` cover every case
-  before building a wrapper component. Likely no wrapper needed — Bootstrap's own `<button
-  class="btn ...">` markup is already themed via `bootstrap-bridge.css`.
-- **Auth forms** (login / register): use `.vk-panel` as the card, Bootstrap `.form-control` /
-  `.form-label` (already themed) for fields. Centre the panel in a max-width column (~420px) —
-  don't stretch auth forms to `--vk-content-max`.
-- **`VkAlert` / inline form errors**: a `.vk-panel` variant with a left accent bar in
-  `--vk-danger` / `--vk-warning` / `--vk-success` / `--vk-info` (2–3px `border-left`, using the
-  existing hairline as the base and just recolouring the left edge — don't invent a new shadow
-  or radius for this).
-- **Empty states**: centred `.vk-label` + short copy + one action button, inside a
-  `.vk-panel--inset`. Used for "no leaderboard data yet", "no forum posts yet", etc.
+- **`VkButton`** — ✅ confirmed, no wrapper built. `.btn-primary` / `.btn-secondary` /
+  `.btn-outline-primary` / `.btn-danger` cover every case via Bootstrap's own `<button
+  class="btn ...">` markup, themed in `bootstrap-bridge.css`.
+- **Auth forms** (login / register) — not built yet. There's no auth backend (no Identity, no
+  login/register endpoints) to wire a real form to, so building the markup now would just be
+  thrown away. When the backend lands: use `.vk-panel` as the card, Bootstrap `.form-control` /
+  `.form-label` (already themed) for fields, centred in a max-width column (~420px) — don't
+  stretch auth forms to `--vk-content-max`. `VkAlert` (below) is ready for the inline error case.
+- **`VkAlert`** — ✅ built: `Components/Ui/VkAlert.razor` (+ `.razor.css`,
+  `VkAlertVariant.cs`). A `.vk-panel` with a 3px `border-left` accent in
+  `--vk-danger` / `--vk-warning` / `--vk-success` / `--vk-info`; `Variant`, optional `Title`,
+  `ChildContent` parameters. See `/dev/styleguide` for a rendered example of every variant.
+- **Empty states** — ✅ built: `Components/Ui/VkEmptyState.razor`. `.vk-panel--inset` well with
+  `Eyebrow` (uppercase label), `Message` copy, and an optional `ActionContent` render fragment
+  for the single call-to-action button.
 
 ## Priority 2 — leaderboards & forums (the stated `Game.Website` responsibilities)
 
-- **`VkTable`** or just themed `<table class="table">`: Bootstrap's table is already retokenised
-  in `bootstrap-bridge.css` (tabular-nums, uppercase label-style headers). Check it renders well
-  with real leaderboard data (rank, player, score columns) before adding anything custom — likely
-  only needs a `.vk-numeric` class on numeric `<td>`s.
-- **Rank badge**: top-3 leaderboard rows get a small badge using `.vk-label--accent` for #1 and
-  `.vk-text-muted` for #2/#3. Do not invent gold/silver/bronze colours — that breaks the
-  one-accent rule; distinguish rank #1 by weight/accent only.
-- **Pagination**: Bootstrap's `.pagination` component, retokenise it in
-  `bootstrap-bridge.css` the same way `.btn`/`.card` were done (it isn't covered yet — check
-  `--bs-pagination-*` variables).
-- **Forum thread list / thread view**: `.vk-panel` per thread row in a list; `.vk-stack` for
-  post bodies in a thread view. Post metadata (author, timestamp) is `.vk-label vk-label--dim`.
-- **User avatar/identity chip**: circular image (this is the one place `border-radius: 50%` is
-  correct — avatars are a deliberate exception to the sharp-corner rule) + username in
-  `--vk-text-strong` + optional rank/role tag as a small `.badge`.
+- **`VkTable`** — ✅ no new component needed, confirmed. Themed `<table class="table">` covers
+  leaderboard data as-is; numeric columns get a `.vk-numeric` class on both `<th>` and `<td>`,
+  which now also right-aligns them (`bootstrap-bridge.css`).
+- **Rank badge** — ✅ built: `Components/Ui/VkRankBadge.razor`. Plain mono numeral; `#1` gets
+  `--vk-accent` + bold weight, `#2`/`#3` stay `--vk-text-muted`. No gold/silver/bronze colours.
+- **Pagination** — ✅ retokenised in `bootstrap-bridge.css` (`--bs-pagination-*` variables,
+  matching the `.btn`/`.card` treatment) and wrapped in `Components/Ui/VkPagination.razor`
+  (`CurrentPage`/`TotalPages`/`WindowSize` params, `CurrentPageChanged` callback; renders a
+  windowed page range rather than every page).
+- **Forum thread list / thread view** — thread *list* row is built:
+  `Components/Ui/VkThreadRow.razor` (`.vk-panel` per row, title as the primary link, metadata —
+  author via `VkIdentityChip`, timestamp, reply count — as a single muted line). The full thread
+  *view* (post-by-post `.vk-stack`) isn't built yet — no forum data model exists to shape it
+  against; build it once posts/replies have a concrete DTO in `Game.Shared`.
+- **User avatar/identity chip** — ✅ built: `Components/Ui/VkIdentityChip.razor`. Circular
+  avatar (`border-radius: 50%`, the deliberate exception to the sharp-corner rule) +
+  `--vk-text-strong` username + optional `Tag` rendered as a small `.badge`. Ships with a
+  placeholder avatar at `wwwroot/img/avatar-placeholder.svg` for when no image URL is known yet.
+
+All Priority 1/2 components above live under `Components/Ui/` (one `.razor` + `.razor.css` pair
+each) and are rendered together at `/dev/styleguide` (not linked from `NavMenu`) for quick visual
+QA — open it after touching any of these files.
 
 ## Priority 3 — the "Play" entry point
 

@@ -1,0 +1,22 @@
+/*
+ * VkEmptyState — a well (.vk-panel--inset) with centred copy. Deliberately quiet: no icon, no
+ * illustration — this is a status readout, not a marketing moment.
+ */
+
+.vk-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--vk-space-3);
+    padding: var(--vk-space-7) var(--vk-space-5);
+    text-align: center;
+}
+
+.vk-empty-state__copy {
+    margin: 0;
+    max-width: 44ch;
+}
+
+.vk-empty-state__action {
+    margin-top: var(--vk-space-2);
+}

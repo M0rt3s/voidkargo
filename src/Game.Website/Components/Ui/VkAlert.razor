@@ -1,0 +1,32 @@
+@*
+    VkAlert — a .vk-panel variant with a coloured left accent bar. Use for inline form errors,
+    banner notices and confirmation messages. Colour alone never carries meaning: pair it with
+    the Title/icon-free text, never rely on the bar colour by itself.
+
+    docs/05-design/component-inventory.md — Priority 1.
+*@
+
+<div class="vk-alert vk-alert--@Variant.ToString().ToLowerInvariant()" role="@Role">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <span class="vk-alert__title">@Title</span>
+    }
+    <div class="vk-alert__body">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    /// <summary>Which semantic colour the accent bar and title use.</summary>
+    [Parameter]
+    public VkAlertVariant Variant { get; set; } = VkAlertVariant.Info;
+
+    /// <summary>Optional short heading shown above the body copy.</summary>
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private string Role => Variant is VkAlertVariant.Danger or VkAlertVariant.Warning ? "alert" : "status";
+}

@@ -1,0 +1,31 @@
+@*
+    VkEmptyState — centred label + short copy + one optional action button, inside a
+    .vk-panel--inset well. Used for "no leaderboard data yet", "no forum posts yet", etc.
+
+    docs/05-design/component-inventory.md — Priority 1.
+*@
+
+<div class="vk-panel vk-panel--inset vk-empty-state">
+    <span class="vk-label vk-label--dim">@Eyebrow</span>
+    <p class="vk-empty-state__copy vk-text-muted">@Message</p>
+    @if (ActionContent is not null)
+    {
+        <div class="vk-empty-state__action">
+            @ActionContent
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Short uppercase eyebrow, e.g. "No results".</summary>
+    [Parameter, EditorRequired]
+    public string Eyebrow { get; set; } = string.Empty;
+
+    /// <summary>One or two sentences explaining the empty state.</summary>
+    [Parameter, EditorRequired]
+    public string Message { get; set; } = string.Empty;
+
+    /// <summary>Optional single call-to-action button/link.</summary>
+    [Parameter]
+    public RenderFragment? ActionContent { get; set; }
+}

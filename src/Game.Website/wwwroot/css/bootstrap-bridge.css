@@ -211,6 +211,12 @@
     text-transform: uppercase;
 }
 
+/* Numeric columns (rank, score, tonnage, etc.): right-align and use tabular figures so values
+   don't jitter as they update. Apply .vk-numeric to both the <th> and its <td>s. */
+.table .vk-numeric {
+    text-align: right;
+}
+
 .modal,
 .offcanvas,
 .dropdown-menu {
@@ -231,5 +237,40 @@
     --bs-badge-border-radius: var(--vk-radius-sharp);
     --bs-badge-font-weight: var(--vk-fw-medium);
     letter-spacing: var(--vk-tracking-label);
+    text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------- pagination ---- */
+.pagination {
+    --bs-pagination-color: var(--vk-text-muted);
+    --bs-pagination-bg: transparent;
+    --bs-pagination-border-width: var(--vk-border-width);
+    --bs-pagination-border-color: var(--vk-border);
+    --bs-pagination-border-radius: var(--vk-radius-sharp);
+    --bs-pagination-padding-x: var(--vk-space-3);
+    --bs-pagination-padding-y: var(--vk-space-2);
+    --bs-pagination-font-size: var(--vk-fs-200);
+
+    --bs-pagination-hover-color: var(--vk-text-strong);
+    --bs-pagination-hover-bg: var(--vk-surface-raised);
+    --bs-pagination-hover-border-color: var(--vk-border-strong);
+
+    --bs-pagination-focus-color: var(--vk-text-strong);
+    --bs-pagination-focus-bg: var(--vk-surface-raised);
+    --bs-pagination-focus-box-shadow: var(--vk-focus-ring);
+
+    --bs-pagination-active-color: var(--vk-void-900);
+    --bs-pagination-active-bg: var(--vk-accent);
+    --bs-pagination-active-border-color: var(--vk-accent);
+
+    --bs-pagination-disabled-color: var(--vk-text-dim);
+    --bs-pagination-disabled-bg: transparent;
+    --bs-pagination-disabled-border-color: var(--vk-border);
+
+    font-variant-numeric: tabular-nums;
+    letter-spacing: var(--vk-tracking-label);
+}
+
+.page-link {
     text-transform: uppercase;
 }

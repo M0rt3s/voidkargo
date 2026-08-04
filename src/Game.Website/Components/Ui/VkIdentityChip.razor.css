@@ -1,0 +1,29 @@
+/*
+ * VkIdentityChip — username + avatar, used in forum posts, leaderboard rows, presence lists.
+ */
+
+.vk-identity-chip {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--vk-space-2);
+}
+
+.vk-identity-chip__avatar {
+    background-color: var(--vk-surface-inset);
+    border: var(--vk-hairline);
+    border-radius: 50%; /* Deliberate exception to the sharp-corner rule — see design-language.md. */
+    flex-shrink: 0;
+    height: 28px;
+    object-fit: cover;
+    width: 28px;
+}
+
+.vk-identity-chip__name {
+    color: var(--vk-text-strong);
+    font-size: var(--vk-fs-300);
+    font-weight: var(--vk-fw-medium);
+}
+
+.vk-identity-chip__tag {
+    font-size: var(--vk-fs-100);
+}

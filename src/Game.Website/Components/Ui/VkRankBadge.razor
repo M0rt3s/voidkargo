@@ -1,0 +1,16 @@
+@*
+    VkRankBadge — leaderboard rank marker. #1 is distinguished by weight/accent only — no
+    gold/silver/bronze colours, per the one-accent rule.
+
+    docs/05-design/component-inventory.md — Priority 2.
+*@
+
+<span class="vk-rank-badge @(Rank == 1 ? "vk-rank-badge--first" : "")">
+    #@Rank
+</span>
+
+@code {
+    /// <summary>1-based leaderboard position.</summary>
+    [Parameter, EditorRequired]
+    public int Rank { get; set; }
+}

@@ -1,0 +1,72 @@
+@*
+    VkPagination — thin wrapper over Bootstrap's .pagination markup (retokenised in
+    bootstrap-bridge.css), for leaderboards/forum lists. Renders a windowed page range so long
+    result sets don't produce hundreds of page links.
+
+    docs/05-design/component-inventory.md — Priority 2.
+*@
+
+<nav aria-label="Pagination">
+    <ul class="pagination">
+        <li class="page-item @(CurrentPage <= 1 ? "disabled" : "")">
+            <button class="page-link" type="button" disabled="@(CurrentPage <= 1)"
+                    @onclick="() => GoTo(CurrentPage - 1)">
+                Previous
+            </button>
+        </li>
+
+        @foreach (var pageNumber in VisiblePages())
+        {
+            <li class="page-item @(pageNumber == CurrentPage ? "active" : "")">
+                <button class="page-link vk-numeric" type="button" @onclick="() => GoTo(pageNumber)"
+                        aria-current="@(pageNumber == CurrentPage ? "page" : null)">
+                    @(pageNumber)
+                </button>
+            </li>
+        }
+
+        <li class="page-item @(CurrentPage >= TotalPages ? "disabled" : "")">
+            <button class="page-link" type="button" disabled="@(CurrentPage >= TotalPages)"
+                    @onclick="() => GoTo(CurrentPage + 1)">
+                Next
+            </button>
+        </li>
+    </ul>
+</nav>
+
+@code {
+    /// <summary>1-based current page.</summary>
+    [Parameter, EditorRequired]
+    public int CurrentPage { get; set; } = 1;
+
+    [Parameter, EditorRequired]
+    public int TotalPages { get; set; } = 1;
+
+    /// <summary>How many page links to show either side of the current page.</summary>
+    [Parameter]
+    public int WindowSize { get; set; } = 2;
+
+    [Parameter]
+    public EventCallback<int> CurrentPageChanged { get; set; }
+
+    private IEnumerable<int> VisiblePages()
+    {
+        var start = Math.Max(1, CurrentPage - WindowSize);
+        var end = Math.Min(TotalPages, CurrentPage + WindowSize);
+        for (var page = start; page <= end; page++)
+        {
+            yield return page;
+        }
+    }
+
+    private async Task GoTo(int page)
+    {
+        if (page < 1 || page > TotalPages || page == CurrentPage)
+        {
+            return;
+        }
+
+        CurrentPage = page;
+        await CurrentPageChanged.InvokeAsync(page);
+    }
+}
