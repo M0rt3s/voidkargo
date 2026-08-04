@@ -56,7 +56,7 @@ namespace Game.Shared.Dtos
     /// <summary>
     /// A faction identity. Factions are catalog data (not a fixed enum) so new factions can be
     /// added without a Game.Shared contract change; the id also keys into the art pipeline's
-    /// palette system (see ADR 0004) so a faction's look and its game-design identity share one
+    /// palette system (see ADR 0006) so a faction's look and its game-design identity share one
     /// source of truth.
     /// </summary>
     public sealed record FactionDto(string Id, string DisplayName, string PaletteId);

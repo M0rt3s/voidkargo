@@ -68,4 +68,11 @@ changes bundled in.
 - Don't add new frameworks/services (queues, caches, extra databases) without an ADR — this is a
   solo-dev project; keep the stack minimal and justified.
 - Don't hand-edit generated Unity meta files or `Library/`/`Temp/` folders.
+- Don't hand-edit Unity scene (`.unity`) or prefab (`.prefab`) YAML directly — these formats are
+  easy to corrupt by hand. Create/modify scene and prefab content through Unity Editor scripts
+  (e.g. the "Foundry" tooling described in
+  [ADR 0006](docs/02-decisions/0006-procedural-indexed-palette-art-pipeline.md)) instead.
 - Don't bypass `Game.Shared` by duplicating DTOs/logic in Backend or (eventually) Unity.
+- Don't commit generated ship/station sprite art without its source genome and a test that
+  regenerates it. Art is data: a genome + the deterministic renderer is the source of truth: see
+  [ADR 0006](docs/02-decisions/0006-procedural-indexed-palette-art-pipeline.md).

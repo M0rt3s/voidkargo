@@ -14,6 +14,11 @@ A plain C# class library referenced **verbatim** by both `Game.Backend` and the 
   `wwwroot/css/tokens.css` and consumed directly by Unity once its UI is built. See
   [ADR 0004](../02-decisions/0004-design-language-and-ui-foundation.md) and
   [docs/05-design](../05-design/design-language.md).
+- `Art/` (planned) — the deterministic, genome-driven procedural pixel-art generator for ships
+  and stations (silhouette/module generation, indexed-canvas rendering, palette validation, PNG
+  encoding). No Unity/ASP.NET Core dependency, so both `Game.Backend` tooling and the Unity
+  Editor's bake step can call it. See
+  [ADR 0006](../02-decisions/0006-procedural-indexed-palette-art-pipeline.md).
 
 ## Rules
 

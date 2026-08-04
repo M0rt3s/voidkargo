@@ -22,7 +22,7 @@ This is a starter stub; expand it as domain modeling happens (see
 | **Stress** (`StressLevel`) | A 0.0–1.0 pressure value on a Node (chiefly `ProductionSite`s) that rises under heavy/overloaded throughput and is relieved by investing materials; sustained overload without relief caps or degrades production until addressed. |
 | **Tick** | A discrete server-side simulation step where the economy, production, consumption, and ship positions advance. |
 | **Economy tick** | A Tick specifically concerned with price/resource updates, pushed to clients via SignalR. |
-| **Genome** | A validated, symbolic JSON description of a ship/station's procedural pixel art (silhouette, modules, palette zones) — the LLM-authorable input to the deterministic art generator. See ADR 0004. |
-| **Palette** | A named 16-colour row in the shared palette LUT texture. Swapping a Node/Ship's palette row re-skins it (faction identity, cosmetics) with no new art assets. See ADR 0004. |
+| **Genome** | A validated, symbolic JSON description of a ship/station's procedural pixel art (silhouette, modules, palette zones) — the LLM-authorable input to the deterministic art generator. See [ADR 0006](../02-decisions/0006-procedural-indexed-palette-art-pipeline.md). |
+| **Palette** | A named 16-colour row in the shared palette LUT texture. Swapping a Node/Ship's palette row re-skins it (faction identity, cosmetics) with no new art assets. See [ADR 0006](../02-decisions/0006-procedural-indexed-palette-art-pipeline.md). |
 | **DTO** | Data Transfer Object defined in `Game.Shared`; the wire contract between `Game.Backend` and `Game.Client`. |
 | **Seeder** | The EF Core dev-only component that populates a fresh database with a playable slice of the game on startup. |

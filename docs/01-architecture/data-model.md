@@ -28,12 +28,13 @@ aspirational-only documentation.
 - `Player` — currently its own row (`PlayerEntity`); see the reconciliation note above regarding
   its relationship to `UserEntity`. Controls one or more companies/fleets.
 - `Faction` — a playable faction identity: narrative flavour, research-tree gating, and (via
-  `PaletteId`) which palette LUT row re-skins its ships/stations. See the procedural art
-  pipeline ADR (planned as ADR 0006).
+  `PaletteId`) which palette LUT row re-skins its ships/stations. See
+  [ADR 0006](../02-decisions/0006-procedural-indexed-palette-art-pipeline.md).
 - `ShipType` — a catalog entry (data, not code) for one concrete ship design. ~20 per
   `ShipClass` (`LightHauler` / `MediumHauler` / `HeavyHauler`), each gated to a `Faction` and an
   `Epoch`, carrying `LoadCapacity` / `Speed` / `Acceleration` / `HopDistance` stats. Its `Id`
-  also matches the art genome that renders it (see the planned art pipeline ADR) — game math
+  also matches the art genome that renders it (see
+  [ADR 0006](../02-decisions/0006-procedural-indexed-palette-art-pipeline.md)) — game math
   and art share one key.
 - `Ship` — an instance of a `ShipType` owned by a `Player`, currently travelling between two
   `Node`s (`FromNodeId`/`ToNodeId`) with a `ProgressPercent` along the current hop. There is no

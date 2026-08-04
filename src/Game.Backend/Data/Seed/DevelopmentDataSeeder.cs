@@ -39,8 +39,7 @@ public sealed class DevelopmentDataSeeder(IServiceProvider services, ILogger<Dev
         logger.LogInformation("Seeding development database with a playable slice of the game...");
 
         // Placeholder faction for the first playable slice; real faction identities/palettes
-        // (see the planned procedural art pipeline ADR) will be authored alongside their art
-        // genomes.
+        // (see ADR 0006) will be authored alongside their art genomes.
         var faction = new FactionEntity { Id = "kolyma-syndicate", DisplayName = "Kolyma Syndicate", PaletteId = "kolyma-syndicate-default" };
 
         var shipType = new ShipTypeEntity
